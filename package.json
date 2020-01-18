@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node bin/dev",
-    "dev": "nodemon bin/dev",
-    "production": "npm run build && node bin/production"
+    "dev": "nodemon bin/dev"
   },
   "repository": {
     "type": "git",
