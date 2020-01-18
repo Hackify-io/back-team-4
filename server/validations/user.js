@@ -1,7 +1,7 @@
 import validator from 'validator';
 import { isEmpty, isRequired } from './is-empty';
 
-export const validateUserInput = data => {
+export const validateUserFields = data => {
   let errors = {};
 
   data.name = isRequired(data.name);
@@ -17,8 +17,8 @@ export const validateUserInput = data => {
     errors.lastname = 'Lastname field is required';
   }
 
-  if (validator.isEmpty(data.age)) {
-    errors.age = 'Age field is required';
+  if (validator.isInt(data.age)) {
+    errors.age = 'Age field should be a number';
   }
 
   if (validator.isEmpty(data.gender)) {

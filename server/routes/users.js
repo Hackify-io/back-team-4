@@ -6,7 +6,7 @@ import ApiResponse from '../models/ApiResponse';
 
 //import models
 import Users from '../models/User';
-//import validation file
+import { validateUserFields } from '../validations/user';
 
 // @route   GET api/users/:id
 // @desc    Get users
@@ -33,7 +33,15 @@ router.get('/:id', async (req, res) => {
 // @access  Private
 router.post('/', async (req, res) => {
   const response = new ApiResponse();
-  //validations
+  const { errors, isValid } = validateUserFields(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // If any errors, send 400 with errors object
+    await response.ValidationError(errors);
+
+    return res.status(response.statusCode).json(response);
+  }
 
   const newUser = new Users({
     name: req.body.name,
