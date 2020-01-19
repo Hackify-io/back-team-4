@@ -15,6 +15,9 @@ import clinics from './routes/clinics';
 //Services
 const app = express();
 
+//data seed helper
+import { seedClinics } from './helpers/clinicsSeedMethod';
+
 //Enable CORS
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -52,3 +55,5 @@ app.use('/api/clinics', clinics);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+// seedClinics();
