@@ -8,6 +8,39 @@ import ApiResponse from '../models/ApiResponse';
 import Clinics from '../models/Clinic';
 import { validateClinicFields } from '../validations/clinic';
 
+// @route   GET api/clinics?{filters}
+// @desc    Get clinics using filter
+// @access  Public
+router.get('/', async (req, res) => {
+  let response = new ApiResponse();
+  try {
+    let clinics = await Clinics.find();
+    let clinicsFiltered = [];
+
+    //perform filters
+    clinics.forEach(c => {
+      //filter by location
+
+      if (c.location == req.query.location) {
+        //then filter by procedures
+        c.procedures.forEach(p => {
+          if (p == req.query.procedure) {
+            clinicsFiltered.push(c);
+          }
+        });
+      }
+    });
+
+    await response.Ok(clinicsFiltered);
+    res.status(response.statusCode).json(response);
+  } catch (err) {
+    console.log(err);
+
+    response.InternalServerError();
+    res.status(response.statusCode).json(response);
+  }
+});
+
 // @route   GET api/clinics/:id
 // @desc    Get clinics
 // @access  Private
@@ -48,6 +81,11 @@ router.post('/', async (req, res) => {
   const newClinic = new Clinics({
     name: req.body.name,
     createdUser: req.body.createdUser,
+    location: req.body.location,
+    address: req.body.address,
+    feedback: req.body.feedback,
+    telephone: req.body.telephone,
+    procedures: req.body.procedures,
     createdDate: new Date()
   });
 
@@ -82,6 +120,11 @@ router.put('/:id', async (req, res) => {
 
   const updatedClinic = {
     name: req.body.name,
+    location: req.body.location,
+    address: req.body.address,
+    feedback: req.body.feedback,
+    telephone: req.body.telephone,
+    procedures: req.body.procedures,
     modifiedUser: req.body.modifiedUser,
     modifiedDate: new Date()
   };
