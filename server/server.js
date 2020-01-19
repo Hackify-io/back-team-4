@@ -47,7 +47,7 @@ require('./config/passport')(passport);
 //API Routes
 app.use('/api/users', users);
 app.use('/api/logins', logins);
-app.use('api/clinics', clinics);
+app.use('/api/clinics', clinics);
 //clinics
 
 const port = process.env.PORT || 5000;
