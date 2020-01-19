@@ -1,14 +1,14 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { keys } from './../config/keys';
+import { keys } from '../config/keys';
 import passport from 'passport';
 const router = express.Router();
 
 //Load Input Validation
 //TODO
 //validate register inputs
-import { validateLoginInput } from './../validations/login';
+import { validateLoginInput } from '../validations/login';
 //Load Models
 import Login from '../models/Login';
 import ApiResponse from '../models/ApiResponse';
@@ -28,6 +28,7 @@ router.post('/clinics/register', async (req, res) => {
   let getLoginRequest = await Login.findOne({ email: register.email });
   //clinic login already exists
   if (getLoginRequest) {
+    let errors = {};
     errors.email = `Email ${getLoginRequest.email} is already registered`;
     await response.ValidationError(errors);
     return res.status(response.statusCode).json(response);
