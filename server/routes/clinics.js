@@ -62,4 +62,41 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  let response = new ApiResponse();
+  //TODO
+  //validations
+
+  //Look if foo Exist
+  let clinic;
+  try {
+    clinic = await Clinics.findById(req.params.id);
+    if (!clinic) {
+      await response.NotFound();
+      return res.status(response.statusCode).json(response);
+    }
+  } catch (err) {
+    await response.InternalServerError(err);
+    res.status(response.statusCode).json(response);
+  }
+
+  const updatedClinic = {
+    name: req.body.name,
+    modifiedUser: req.body.modifiedUser,
+    modifiedDate: new Date()
+  };
+
+  try {
+    let updateResponse = await Clinics.findOneAndUpdate(req.params.id, {
+      $set: updatedClinic
+    });
+    let updatedModel = await Clinics.findById(updateResponse._id);
+    await response.Ok(updatedModel);
+    res.status(response.statusCode).json(response);
+  } catch (err) {
+    await response.InternalServerError(err);
+    res.status(response.statusCode).json(response);
+  }
+});
+
 export default router;
