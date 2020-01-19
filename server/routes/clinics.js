@@ -7,6 +7,7 @@ import ApiResponse from '../models/ApiResponse';
 //import models
 import Clinics from '../models/Clinic';
 import { validateClinicFields } from '../validations/clinic';
+import Appointment from '../models/Appointment';
 
 // @route   GET api/clinics?{filters}
 // @desc    Get clinics using filter
@@ -102,6 +103,9 @@ router.post('/', async (req, res) => {
   }
 });
 
+// @route   PUT api/clinics
+// @desc    Update clinics
+// @access  Private
 router.put('/:id', async (req, res) => {
   let response = new ApiResponse();
   //TODO
@@ -142,6 +146,40 @@ router.put('/:id', async (req, res) => {
     res.status(response.statusCode).json(response);
   } catch (err) {
     await response.InternalServerError(err);
+    res.status(response.statusCode).json(response);
+  }
+});
+
+// @route   POST api/clinics/:id/appointments
+// @desc    Create appointment for clinic
+// @access  Private
+router.post('/', async (req, res) => {
+  const response = new ApiResponse();
+  const { errors, isValid } = validateAppointmentFields(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // If any errors, send 400 with errors object
+    await response.ValidationError(errors);
+
+    return res.status(response.statusCode).json(response);
+  }
+
+  const newAppointment = new Appointment({
+    userId: req.body.userId,
+    createdUser: req.body.clinicId,
+    date: req.body.date,
+    status: 'Pending',
+    createdDate: new Date()
+  });
+
+  try {
+    const postResponse = await newAppointment.save();
+
+    await response.Ok(postResponse);
+    res.status(response.statusCode).json(response);
+  } catch (err) {
+    await response.InternalServerError();
     res.status(response.statusCode).json(response);
   }
 });
