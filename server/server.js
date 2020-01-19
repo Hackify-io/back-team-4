@@ -9,7 +9,7 @@ import { keys } from './config/keys';
 
 //Routes
 import users from './routes/users';
-import logins from './routes/login';
+import logins from './routes/logins';
 import clinics from './routes/clinics';
 
 //Services
