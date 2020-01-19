@@ -63,4 +63,44 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  let response = new ApiResponse();
+  //TODO
+  //validations
+
+  //Look if foo Exist
+  let user;
+  try {
+    user = await Users.findById(req.params.id);
+    if (!user) {
+      await response.NotFound();
+      return res.status(response.statusCode).json(response);
+    }
+  } catch (err) {
+    await response.InternalServerError(err);
+    res.status(response.statusCode).json(response);
+  }
+
+  const updatedUser = {
+    name: req.body.name,
+    lastname: req.body.lastname,
+    age: req.body.age,
+    gender: req.body.gender,
+    modifiedUser: req.body.modifiedUser,
+    modifiedDate: new Date()
+  };
+
+  try {
+    let updateResponse = await Users.findOneAndUpdate(req.params.id, {
+      $set: updatedUser
+    });
+    let updatedModel = await Users.findById(updateResponse._id);
+    await response.Ok(updatedModel);
+    res.status(response.statusCode).json(response);
+  } catch (err) {
+    await response.InternalServerError(err);
+    res.status(response.statusCode).json(response);
+  }
+});
+
 export default router;
