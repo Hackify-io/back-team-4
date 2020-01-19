@@ -23,6 +23,8 @@ router.get('/:id', async (req, res) => {
     await response.Ok(clinic);
     res.status(response.statusCode).json(response);
   } catch (err) {
+    //TODO
+    //if id is not a valid mongo id the app sends a 500 error
     await response.InternalServerError();
     res.status(response.statusCode).json(response);
   }
