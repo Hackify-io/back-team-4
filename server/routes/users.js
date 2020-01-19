@@ -54,12 +54,10 @@ router.post('/', async (req, res) => {
 
   try {
     const postResponse = await newUser.save();
-    console.log(postResponse);
 
     await response.Ok(postResponse);
     res.status(response.statusCode).json(response);
   } catch (err) {
-    console.log(err);
     await response.InternalServerError();
     res.status(response.statusCode).json(response);
   }
