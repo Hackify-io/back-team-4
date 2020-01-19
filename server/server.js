@@ -9,6 +9,7 @@ import { keys } from './config/keys';
 
 //Routes
 import users from './routes/users';
+import logins from './routes/login';
 //TODO
 //import the rest of routes
 
@@ -46,7 +47,7 @@ require('./config/passport')(passport);
 
 //API Routes
 app.use('/api/users', users);
-//logins
+app.use('/api/logins', logins);
 //clinics
 
 const port = process.env.PORT || 5000;
