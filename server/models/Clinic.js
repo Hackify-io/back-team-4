@@ -21,6 +21,12 @@ const clinicSchema = new VersionSchema({
   },
   telephone: {
     type: String
+  },
+  description: {
+    type: String
+  },
+  imgs: {
+    type: Array
   }
   //TODO
   //reference to type contact
