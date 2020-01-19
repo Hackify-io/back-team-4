@@ -10,8 +10,7 @@ import { keys } from './config/keys';
 //Routes
 import users from './routes/users';
 import logins from './routes/login';
-//TODO
-//import the rest of routes
+import clinics from './routes/clinics';
 
 //Services
 const app = express();
@@ -48,6 +47,7 @@ require('./config/passport')(passport);
 //API Routes
 app.use('/api/users', users);
 app.use('/api/logins', logins);
+app.use('api/clinics', clinics);
 //clinics
 
 const port = process.env.PORT || 5000;
