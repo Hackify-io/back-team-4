@@ -28,8 +28,6 @@ const clinicSchema = new VersionSchema({
   imgs: {
     type: Array
   }
-  //TODO
-  //reference to type contact
 });
 
 const Clinic = mongoose.model('clinics', clinicSchema);

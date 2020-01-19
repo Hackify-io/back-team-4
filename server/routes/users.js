@@ -68,7 +68,7 @@ router.put('/:id', async (req, res) => {
   //TODO
   //validations
 
-  //Look if foo Exist
+  //Look if user Exist
   let user;
   try {
     user = await Users.findById(req.params.id);

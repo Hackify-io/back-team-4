@@ -86,6 +86,8 @@ router.post('/', async (req, res) => {
     feedback: req.body.feedback,
     telephone: req.body.telephone,
     procedures: req.body.procedures,
+    description: req.body.description,
+    imgs: req.body.imgs,
     createdDate: new Date()
   });
 
@@ -125,6 +127,8 @@ router.put('/:id', async (req, res) => {
     feedback: req.body.feedback,
     telephone: req.body.telephone,
     procedures: req.body.procedures,
+    description: req.body.description,
+    imgs: req.body.imgs,
     modifiedUser: req.body.modifiedUser,
     modifiedDate: new Date()
   };
