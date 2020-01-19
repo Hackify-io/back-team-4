@@ -6,7 +6,7 @@ export const validateUserFields = data => {
 
   data.name = isRequired(data.name);
   data.lastname = isRequired(data.lastname);
-  data.age = isRequired(data.age);
+  //data.age = isRequired(data.age);
   data.gender = isRequired(data.gender);
 
   if (validator.isEmpty(data.name)) {
@@ -17,8 +17,8 @@ export const validateUserFields = data => {
     errors.lastname = 'Lastname field is required';
   }
 
-  if (validator.isInt(data.age)) {
-    errors.age = 'Age field should be a number';
+  if (data.age === undefined) {
+    errors.age = 'Age field is required';
   }
 
   if (validator.isEmpty(data.gender)) {
