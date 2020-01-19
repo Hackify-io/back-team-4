@@ -109,17 +109,13 @@ router.post('/clinics', async (req, res) => {
   let response = new ApiResponse();
 
   const loginRequest = req.body;
-  const { errors, isValid } = validateLoginInput(loginRequest);
-
-  //Check Model Validation Errors
-  if (!isValid) {
-    await response.ValidationError(errors);
-    return res.status(response.statusCode).json(response);
-  }
+  //TODO
+  //validate Model Validation Errors
 
   //Look if Login exists
   let getLoginResponse = await Login.findOne({
-    email: loginRequest.email
+    email: loginRequest.email,
+    role: roles.clinic
   });
   if (!getLoginResponse) {
     await response.NotFound();
@@ -164,17 +160,12 @@ router.post('/users', async (req, res) => {
 
   const loginRequest = req.body;
   //TODO
-  // const { errors, isValid } = validateLoginInput(loginRequest);
-
-  //Check Model Validation Errors
-  // if (!isValid) {
-  //   await response.ValidationError(errors);
-  //   return res.status(response.statusCode).json(response);
-  // }
+  //Model Validation Errors
 
   //Look if Login exists
   let getLoginResponse = await Login.findOne({
-    email: loginRequest.email
+    email: loginRequest.email,
+    role: roles.member
   });
   if (!getLoginResponse) {
     await response.NotFound();
