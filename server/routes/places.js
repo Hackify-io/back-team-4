@@ -5,34 +5,17 @@ const router = express();
 import ApiResponse from "../models/ApiResponse";
 
 //import models
-import Clinics from "../models/Clinic";
-import { validateClinicFields } from "../validations/clinic";
-import Appointment from "../models/Appointment";
+import Place from "../models/Place";
+import { validatePlaceFields } from "../validations/place";
 
-// @route   GET api/clinics?{filters}
-// @desc    Get clinics using filter
+// @route   GET api/places
+// @desc    Get places
 // @access  Public
 router.get("/", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let clinics = await Clinics.find();
-    let clinicsFiltered = [];
-
-    //perform filters
-    clinics.forEach(c => {
-      //filter by location
-
-      if (c.location == req.query.location) {
-        //then filter by procedures
-        c.procedures.forEach(p => {
-          if (p == req.query.procedure) {
-            clinicsFiltered.push(c);
-          }
-        });
-      }
-    });
-
-    await response.Ok(clinicsFiltered);
+    let places = await Place.find();
+    response.Ok(places);
     res.status(response.statusCode).json(response);
   } catch (err) {
     response.InternalServerError(err.message);
@@ -40,19 +23,19 @@ router.get("/", async (req, res) => {
   }
 });
 
-// @route   GET api/clinics/:id
-// @desc    Get clinics
-// @access  Private
+// @route   GET api/places/:id
+// @desc    Get places
+// @access  Public
 router.get("/:id", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let clinic = await Clinics.findById(req.params.id);
-    if (!clinic) {
+    let place = await Place.findById(req.params.id);
+    if (!place) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
     }
 
-    await response.Ok(clinic);
+    await response.Ok(place);
     res.status(response.statusCode).json(response);
   } catch (err) {
     await response.InternalServerError(err.message);
@@ -60,12 +43,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// @route   POST api/clinics
-// @desc    Create clinics
+// @route   POST api/places
+// @desc    Create places
 // @access  Private
 router.post("/", async (req, res) => {
   const response = new ApiResponse();
-  const { errors, isValid } = validateClinicFields(req.body);
+  const { errors, isValid } = validatePlaceFields(req.body);
 
   // Check Validation
   if (!isValid) {
@@ -75,21 +58,16 @@ router.post("/", async (req, res) => {
     return res.status(response.statusCode).json(response);
   }
 
-  const newClinic = new Clinics({
-    name: req.body.name,
+  const newPlace = new Place({
+    country: req.body.country,
+    state: req.body.state,
+    city: req.body.city,
     createdUser: req.body.createdUser,
-    location: req.body.location,
-    address: req.body.address,
-    feedback: req.body.feedback,
-    telephone: req.body.telephone,
-    procedures: req.body.procedures,
-    description: req.body.description,
-    imgs: req.body.imgs,
     createdDate: new Date()
   });
 
   try {
-    const postResponse = await newClinic.save();
+    const postResponse = await newPlace.save();
 
     await response.Ok(postResponse);
     res.status(response.statusCode).json(response);
@@ -99,12 +77,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-// @route   PUT api/clinics
-// @desc    Update clinics
-// @access  Private
 router.put("/:id", async (req, res) => {
   let response = new ApiResponse();
-  const { errors, isValid } = validateClinicFields(req.body);
+  const { errors, isValid } = validatePlaceFields(req.body);
 
   // Check Validation
   if (!isValid) {
@@ -114,11 +89,11 @@ router.put("/:id", async (req, res) => {
     return res.status(response.statusCode).json(response);
   }
 
-  //Look if foo Exist
-  let clinic;
+  //Look if place Exist
+  let place;
   try {
-    clinic = await Clinics.findById(req.params.id);
-    if (!clinic) {
+    place = await Place.findById(req.params.id);
+    if (!place) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
     }
@@ -127,25 +102,40 @@ router.put("/:id", async (req, res) => {
     res.status(response.statusCode).json(response);
   }
 
-  const updatedClinic = {
-    name: req.body.name,
-    location: req.body.location,
-    address: req.body.address,
-    feedback: req.body.feedback,
-    telephone: req.body.telephone,
-    procedures: req.body.procedures,
-    description: req.body.description,
-    imgs: req.body.imgs,
+  const updatedPlace = {
+    country: req.body.country,
+    state: req.body.state,
+    city: req.body.city,
     modifiedUser: req.body.modifiedUser,
     modifiedDate: new Date()
   };
 
   try {
-    let updateResponse = await Clinics.findOneAndUpdate(req.params.id, {
-      $set: updatedClinic
+    let updateResponse = await Place.findOneAndUpdate(req.params.id, {
+      $set: updatedPlace
     });
-    let updatedModel = await Clinics.findById(updateResponse._id);
+    let updatedModel = await Place.findById(updateResponse._id);
     await response.Ok(updatedModel);
+    res.status(response.statusCode).json(response);
+  } catch (err) {
+    await response.InternalServerError(err.message);
+    res.status(response.statusCode).json(response);
+  }
+});
+
+// @route   DELETE api/places/:id
+// @desc    Delete place
+// @access  private
+router.delete("/:id", async (req, res) => {
+  let response = new ApiResponse();
+  try {
+    let place = await Place.findById(req.params.id);
+    if (!place) {
+      await response.NotFound();
+      return res.status(response.statusCode).json(response);
+    }
+    await place.remove();
+    await response.NoContent();
     res.status(response.statusCode).json(response);
   } catch (err) {
     await response.InternalServerError(err.message);

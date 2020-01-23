@@ -5,34 +5,17 @@ const router = express();
 import ApiResponse from "../models/ApiResponse";
 
 //import models
-import Clinics from "../models/Clinic";
-import { validateClinicFields } from "../validations/clinic";
-import Appointment from "../models/Appointment";
+import Procedure from "../models/Procedure";
+import { validateProcedureFields } from "../validations/procedure";
 
-// @route   GET api/clinics?{filters}
-// @desc    Get clinics using filter
+// @route   GET api/procedures
+// @desc    Get procedures
 // @access  Public
 router.get("/", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let clinics = await Clinics.find();
-    let clinicsFiltered = [];
-
-    //perform filters
-    clinics.forEach(c => {
-      //filter by location
-
-      if (c.location == req.query.location) {
-        //then filter by procedures
-        c.procedures.forEach(p => {
-          if (p == req.query.procedure) {
-            clinicsFiltered.push(c);
-          }
-        });
-      }
-    });
-
-    await response.Ok(clinicsFiltered);
+    let procedures = await Procedure.find();
+    response.Ok(procedures);
     res.status(response.statusCode).json(response);
   } catch (err) {
     response.InternalServerError(err.message);
@@ -40,33 +23,33 @@ router.get("/", async (req, res) => {
   }
 });
 
-// @route   GET api/clinics/:id
-// @desc    Get clinics
-// @access  Private
+// @route   GET api/procedures/:id
+// @desc    Get procedures
+// @access  Public
 router.get("/:id", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let clinic = await Clinics.findById(req.params.id);
-    if (!clinic) {
+    let procedure = await Procedure.findById(req.params.id);
+    if (!procedure) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
     }
 
-    await response.Ok(clinic);
+    await response.Ok(procedure);
     res.status(response.statusCode).json(response);
   } catch (err) {
+    console.log(err);
     await response.InternalServerError(err.message);
     res.status(response.statusCode).json(response);
   }
 });
 
-// @route   POST api/clinics
-// @desc    Create clinics
+// @route   POST api/procedures
+// @desc    Create procedures
 // @access  Private
 router.post("/", async (req, res) => {
   const response = new ApiResponse();
-  const { errors, isValid } = validateClinicFields(req.body);
-
+  const { errors, isValid } = validateProcedureFields(req.body);
   // Check Validation
   if (!isValid) {
     // If any errors, send 400 with errors object
@@ -75,21 +58,14 @@ router.post("/", async (req, res) => {
     return res.status(response.statusCode).json(response);
   }
 
-  const newClinic = new Clinics({
+  const newProcedure = new Procedure({
     name: req.body.name,
     createdUser: req.body.createdUser,
-    location: req.body.location,
-    address: req.body.address,
-    feedback: req.body.feedback,
-    telephone: req.body.telephone,
-    procedures: req.body.procedures,
-    description: req.body.description,
-    imgs: req.body.imgs,
     createdDate: new Date()
   });
 
   try {
-    const postResponse = await newClinic.save();
+    const postResponse = await newProcedure.save();
 
     await response.Ok(postResponse);
     res.status(response.statusCode).json(response);
@@ -99,12 +75,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-// @route   PUT api/clinics
-// @desc    Update clinics
-// @access  Private
 router.put("/:id", async (req, res) => {
   let response = new ApiResponse();
-  const { errors, isValid } = validateClinicFields(req.body);
+  const { errors, isValid } = validateProcedureFields(req.body);
 
   // Check Validation
   if (!isValid) {
@@ -114,11 +87,11 @@ router.put("/:id", async (req, res) => {
     return res.status(response.statusCode).json(response);
   }
 
-  //Look if foo Exist
-  let clinic;
+  //Look if procedure Exist
+  let procedure;
   try {
-    clinic = await Clinics.findById(req.params.id);
-    if (!clinic) {
+    procedure = await Procedure.findById(req.params.id);
+    if (!procedure) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
     }
@@ -127,25 +100,38 @@ router.put("/:id", async (req, res) => {
     res.status(response.statusCode).json(response);
   }
 
-  const updatedClinic = {
+  const updatedProcedure = {
     name: req.body.name,
-    location: req.body.location,
-    address: req.body.address,
-    feedback: req.body.feedback,
-    telephone: req.body.telephone,
-    procedures: req.body.procedures,
-    description: req.body.description,
-    imgs: req.body.imgs,
     modifiedUser: req.body.modifiedUser,
     modifiedDate: new Date()
   };
 
   try {
-    let updateResponse = await Clinics.findOneAndUpdate(req.params.id, {
-      $set: updatedClinic
+    let updateResponse = await Procedure.findOneAndUpdate(req.params.id, {
+      $set: updatedProcedure
     });
-    let updatedModel = await Clinics.findById(updateResponse._id);
+    let updatedModel = await Procedure.findById(updateResponse._id);
     await response.Ok(updatedModel);
+    res.status(response.statusCode).json(response);
+  } catch (err) {
+    await response.InternalServerError(err.message);
+    res.status(response.statusCode).json(response);
+  }
+});
+
+// @route   DELETE api/procedures/:id
+// @desc    Delete procedure
+// @access  private
+router.delete("/:id", async (req, res) => {
+  let response = new ApiResponse();
+  try {
+    let procedure = await Procedure.findById(req.params.id);
+    if (!procedure) {
+      await response.NotFound();
+      return res.status(response.statusCode).json(response);
+    }
+    await procedure.remove();
+    await response.NoContent();
     res.status(response.statusCode).json(response);
   } catch (err) {
     await response.InternalServerError(err.message);

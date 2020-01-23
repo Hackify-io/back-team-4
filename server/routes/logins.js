@@ -1,25 +1,25 @@
-import express from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { keys } from '../config/keys';
-import passport from 'passport';
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { keys } from "../config/keys";
+import passport from "passport";
 const router = express.Router();
 
 //Load Input Validation
 //TODO
 //validate register inputs
-import { validateLoginInput } from '../validations/login';
+import { validateLoginInput } from "../validations/login";
 //Load Models
-import Login from '../models/Login';
-import ApiResponse from '../models/ApiResponse';
+import Login from "../models/Login";
+import ApiResponse from "../models/ApiResponse";
 
 //import constants
-import { roles } from '../constants/constants';
+import { roles } from "../constants/constants";
 
 // @route   POST api/logins/clinics/register
 // @desc    Register new Login
 // @access  Public
-router.post('/clinics/register', async (req, res) => {
+router.post("/clinics/register", async (req, res) => {
   let response = new ApiResponse();
   const register = req.body;
   //TODO
@@ -62,7 +62,7 @@ router.post('/clinics/register', async (req, res) => {
 // @route   POST api/logins/users/register
 // @desc    Register new Login
 // @access  Public
-router.post('/users/register', async (req, res) => {
+router.post("/users/register", async (req, res) => {
   let response = new ApiResponse();
   const register = req.body;
   //TODO
@@ -106,7 +106,7 @@ router.post('/users/register', async (req, res) => {
 // @route   POST api/logins/clinic
 // @desc    Login user of type clinic: Returning a JWT
 // @access  Public
-router.post('/clinics', async (req, res) => {
+router.post("/clinics", async (req, res) => {
   let response = new ApiResponse();
 
   const loginRequest = req.body;
@@ -138,8 +138,8 @@ router.post('/clinics', async (req, res) => {
       keys.authSecret,
       {
         expiresIn: 3600,
-        audience: 'All',
-        issuer: 'medtravel'
+        audience: "All",
+        issuer: "medtravel"
       },
       (err, token) => {
         if (err) {
@@ -156,10 +156,11 @@ router.post('/clinics', async (req, res) => {
 // @route   POST api/logins/users
 // @desc    Login user: Returning a JWT
 // @access  Public
-router.post('/users', async (req, res) => {
+router.post("/users", async (req, res) => {
   let response = new ApiResponse();
 
   const loginRequest = req.body;
+  console.log(loginRequest);
   //TODO
   //Model Validation Errors
 
@@ -188,8 +189,8 @@ router.post('/users', async (req, res) => {
       keys.authSecret,
       {
         expiresIn: 3600,
-        audience: 'All',
-        issuer: 'medtravel'
+        audience: "All",
+        issuer: "medtravel"
       },
       (err, token) => {
         if (err) {

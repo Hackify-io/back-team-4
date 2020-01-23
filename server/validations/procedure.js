@@ -1,13 +1,13 @@
 import validator from "validator";
 import { isEmpty, isRequired } from "./is-empty";
 
-export const validateAppointmentFields = data => {
+export const validateProcedureFields = data => {
   let errors = {};
 
-  data.Date = isRequired(data.date);
+  data.name = isRequired(data.name);
 
-  if (validator.isEmpty(data.date)) {
-    errors.date = "Date field is required";
+  if (validator.isEmpty(data.name)) {
+    errors.name = "Name field is required";
   }
 
   return {

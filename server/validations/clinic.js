@@ -1,5 +1,5 @@
-import validator from 'validator';
-import { isEmpty, isRequired } from './is-empty';
+import validator from "validator";
+import { isEmpty, isRequired } from "./is-empty";
 
 export const validateClinicFields = data => {
   let errors = {};
@@ -7,7 +7,7 @@ export const validateClinicFields = data => {
   data.name = isRequired(data.name);
 
   if (validator.isEmpty(data.name)) {
-    errors.name = 'Name field is required';
+    errors.name = "Name field is required";
   }
 
   return {
