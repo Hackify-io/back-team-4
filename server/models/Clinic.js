@@ -9,11 +9,10 @@ const clinicSchema = new VersionSchema({
     required: true
   },
   procedures: [{ type: Schema.Types.ObjectId, ref: "procedures" }],
-  feedBack: {
-    type: Object
-  },
+  feedbacks: [{ type: Object }],
   location: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: "places"
   },
   address: {
     type: String
@@ -25,7 +24,7 @@ const clinicSchema = new VersionSchema({
     type: String
   },
   imgs: {
-    type: Array
+    type: [String]
   }
 });
 

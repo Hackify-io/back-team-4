@@ -15,7 +15,9 @@ router.get("/", async (req, res) => {
   let response = new ApiResponse();
   const { location, procedure } = req.query;
   try {
-    let clinic = await Clinic.find().populate("procedures");
+    let clinic = await Clinic.find()
+      .populate("procedures")
+      .populate("location");
     let filteredClinic = clinic
       .filter(c => {
         return location
@@ -44,7 +46,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let clinic = await Clinic.findById(req.params.id).populate("procedures");
+    let clinic = await Clinic.findById(req.params.id)
+      .populate("procedures")
+      .populate("location");
     if (!clinic) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
@@ -78,7 +82,7 @@ router.post("/", async (req, res) => {
     createdUser: req.body.createdUser,
     location: req.body.location,
     address: req.body.address,
-    feedback: req.body.feedback,
+    feedback: [],
     telephone: req.body.telephone,
     procedures: req.body.procedures,
     description: req.body.description,

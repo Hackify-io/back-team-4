@@ -14,6 +14,7 @@ import procedures from "./routes/procedures";
 import places from "./routes/places";
 import clinics from "./routes/clinics";
 import appointments from "./routes/appointments";
+import feedbacks from "./routes/feedbacks";
 
 //Services
 const app = express();
@@ -51,8 +52,7 @@ app.use("/api/procedures", procedures);
 app.use("/api/places", places);
 app.use("/api/clinics", clinics);
 app.use("/api/clinics/:clinicId/appointments", appointments);
-
-//clinics
+app.use("/api/clinics", feedbacks);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running on port ${port}`));
