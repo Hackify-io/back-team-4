@@ -1,3 +1,2 @@
--Add err.message in the catch for all Routes when retuning internal server error
--Move appointments from clinic.js to its own file
+-Separete Login/Register from User and Clinics (Allow same email for different roles)
 -Make Delete Action for all Routes

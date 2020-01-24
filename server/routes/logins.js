@@ -8,7 +8,10 @@ const router = express.Router();
 //Load Input Validation
 //TODO
 //validate register inputs
-import { validateLoginInput } from "../validations/login";
+import {
+  validateLoginFields,
+  validateRegisterFields
+} from "../validations/login";
 //Load Models
 import Login from "../models/Login";
 import ApiResponse from "../models/ApiResponse";
@@ -21,9 +24,17 @@ import { roles } from "../constants/constants";
 // @access  Public
 router.post("/clinics/register", async (req, res) => {
   let response = new ApiResponse();
+  const { errors, isValid } = validateRegisterFields(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // If any errors, send 400 with errors object
+    await response.ValidationError(errors);
+
+    return res.status(response.statusCode).json(response);
+  }
+
   const register = req.body;
-  //TODO
-  //body validations
 
   let getLoginRequest = await Login.findOne({ email: register.email });
   //clinic login already exists
@@ -64,9 +75,16 @@ router.post("/clinics/register", async (req, res) => {
 // @access  Public
 router.post("/users/register", async (req, res) => {
   let response = new ApiResponse();
+  const { errors, isValid } = validateRegisterFields(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    // If any errors, send 400 with errors object
+    await response.ValidationError(errors);
+
+    return res.status(response.statusCode).json(response);
+  }
   const register = req.body;
-  //TODO
-  //validations
 
   let getLoginRequest = await Login.findOne({ email: register.email });
   //clinic login already exists
@@ -108,10 +126,16 @@ router.post("/users/register", async (req, res) => {
 // @access  Public
 router.post("/clinics", async (req, res) => {
   let response = new ApiResponse();
+  const { errors, isValid } = validateLoginFields(req.body);
 
+  // Check Validation
+  if (!isValid) {
+    // If any errors, send 400 with errors object
+    await response.ValidationError(errors);
+
+    return res.status(response.statusCode).json(response);
+  }
   const loginRequest = req.body;
-  //TODO
-  //validate Model Validation Errors
 
   //Look if Login exists
   let getLoginResponse = await Login.findOne({
@@ -158,11 +182,16 @@ router.post("/clinics", async (req, res) => {
 // @access  Public
 router.post("/users", async (req, res) => {
   let response = new ApiResponse();
+  const { errors, isValid } = validateLoginFields(req.body);
 
+  // Check Validation
+  if (!isValid) {
+    // If any errors, send 400 with errors object
+    await response.ValidationError(errors);
+
+    return res.status(response.statusCode).json(response);
+  }
   const loginRequest = req.body;
-  console.log(loginRequest);
-  //TODO
-  //Model Validation Errors
 
   //Look if Login exists
   let getLoginResponse = await Login.findOne({

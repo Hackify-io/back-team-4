@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
-import VersionSchema from './VersionSchema';
+import mongoose from "mongoose";
+import { Schema } from "mongoose";
+import VersionSchema from "./VersionSchema";
 
 //create schema
 const clinicSchema = new VersionSchema({
@@ -7,9 +8,7 @@ const clinicSchema = new VersionSchema({
     type: String,
     required: true
   },
-  procedures: {
-    type: Array
-  },
+  procedures: [{ type: Schema.Types.ObjectId, ref: "procedures" }],
   feedBack: {
     type: Object
   },
@@ -30,5 +29,5 @@ const clinicSchema = new VersionSchema({
   }
 });
 
-const Clinic = mongoose.model('clinics', clinicSchema);
+const Clinic = mongoose.model("clinics", clinicSchema);
 export default Clinic;

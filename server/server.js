@@ -10,10 +10,10 @@ import { keys } from "./config/keys";
 //Routes
 import users from "./routes/users";
 import logins from "./routes/logins";
+import procedures from "./routes/procedures";
+import places from "./routes/places";
 import clinics from "./routes/clinics";
 import appointments from "./routes/appointments";
-import places from "./routes/places";
-import procedures from "./routes/procedures";
 
 //Services
 const app = express();
@@ -47,10 +47,11 @@ require("./config/passport")(passport);
 //API Routes
 app.use("/api/users", users);
 app.use("/api/logins", logins);
+app.use("/api/procedures", procedures);
+app.use("/api/places", places);
 app.use("/api/clinics", clinics);
 app.use("/api/clinics/:clinicId/appointments", appointments);
-app.use("/api/places", places);
-app.use("/api/procedures", procedures);
+
 //clinics
 
 const port = process.env.PORT || 5000;
