@@ -23,6 +23,7 @@ import cors from 'cors';
 //data seed helper
 import { seedClinics } from './helpers/clinicsSeedMethod';
 import { seedProcedures } from './helpers/proceduresSeedMethod';
+import { seedPlaces } from './helpers/placesSeedMethod';
 
 //Enable CORS
 app.use(cors());
@@ -60,3 +61,4 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 
 // seedClinics();
 seedProcedures();
+seedPlaces();
