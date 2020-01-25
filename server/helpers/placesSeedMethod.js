@@ -1,16 +1,26 @@
-import Place from '../models/Place';
+import Place from "../models/Place";
 
 export const seedPlaces = async () => {
   const places = [
     {
-      country: 'mexico',
-      state: 'baja califas',
-      city: 'ensenada'
+      country: "Mexico",
+      state: "Baja California",
+      city: "Tijuana"
     },
     {
-      country: 'mexico',
-      state: 'baja california',
-      city: 'tijuana'
+      country: "Mexico",
+      state: "Yucatan",
+      city: "Merida"
+    },
+    {
+      country: "Mexico",
+      state: "Jalisco",
+      city: "Guadalajara"
+    },
+    {
+      country: "Mexico",
+      state: "Monterrey",
+      city: "Monterrey"
     }
   ];
 
@@ -23,7 +33,7 @@ export const seedPlaces = async () => {
     });
     if (!placeExist) {
       const place = new Place({
-        createdUser: 'data seed',
+        createdUser: "data seed",
         createdDate: new Date(),
         country: pl.country,
         state: pl.state,
