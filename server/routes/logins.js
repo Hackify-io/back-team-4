@@ -25,12 +25,10 @@ import { roles } from '../constants/constants';
 router.post('/clinics/register', async (req, res) => {
   let response = new ApiResponse();
   const { errors, isValid } = validateRegisterFields(req.body);
-
   // Check Validation
   if (!isValid) {
     // If any errors, send 400 with errors object
     await response.ValidationError(errors);
-
     return res.status(response.statusCode).json(response);
   }
 
@@ -61,8 +59,8 @@ router.post('/clinics/register', async (req, res) => {
     bcrypt.hash(newLogin.password, salt, (err, hash) => {
       if (err) throw err;
       newLogin.password = hash;
-      let loginResult = newLogin.save().then(() => {
-        response.Ok(loginResult).then(() => {
+      newLogin.save().then(login => {
+        response.Ok(login).then(() => {
           return res.status(response.statusCode).json(response);
         });
       });
@@ -112,8 +110,8 @@ router.post('/users/register', async (req, res) => {
     bcrypt.hash(newLogin.password, salt, (err, hash) => {
       if (err) throw err;
       newLogin.password = hash;
-      let loginResult = newLogin.save().then(() => {
-        response.Ok(loginResult).then(() => {
+      newLogin.save().then(login => {
+        response.Ok(login).then(() => {
           return res.status(response.statusCode).json(response);
         });
       });
