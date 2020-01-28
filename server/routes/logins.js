@@ -14,6 +14,7 @@ import {
 } from '../validations/login';
 //Load Models
 import Login from '../models/Login';
+import Clinic from '../models/Clinic';
 import ApiResponse from '../models/ApiResponse';
 
 //import constants
@@ -147,15 +148,16 @@ router.post('/clinics', async (req, res) => {
 
   //If login exist encrypt password and validate model
   const login = getLoginResponse;
+  const clinic = await Clinic.findOne({ loginId: login._id });
   const isMatch = await bcrypt.compare(loginRequest.password, login.password);
   if (isMatch) {
     //Sign the Token
     const payload = {
-      id: login.coorelationId,
+      id: login._id,
+      clinicId: clinic ? clinic._id : null,
       email: login.email,
       role: roles.clinic
     };
-
     jwt.sign(
       payload,
       keys.authSecret,
