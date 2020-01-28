@@ -1,18 +1,23 @@
-import mongoose from "mongoose";
-import { Schema } from "mongoose";
-import VersionSchema from "./VersionSchema";
+import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
+import VersionSchema from './VersionSchema';
 
 //create schema
 const clinicSchema = new VersionSchema({
+  loginId: {
+    type: Schema.Types.ObjectId,
+    ref: 'logins',
+    required: true
+  },
   name: {
     type: String,
     required: true
   },
-  procedures: [{ type: Schema.Types.ObjectId, ref: "procedures" }],
+  procedures: [{ type: Schema.Types.ObjectId, ref: 'procedures' }],
   feedbacks: [{ type: Object }],
   location: {
     type: Schema.Types.ObjectId,
-    ref: "places"
+    ref: 'places'
   },
   address: {
     type: String
@@ -28,5 +33,5 @@ const clinicSchema = new VersionSchema({
   }
 });
 
-const Clinic = mongoose.model("clinics", clinicSchema);
+const Clinic = mongoose.model('clinics', clinicSchema);
 export default Clinic;

@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
-import { Schema } from "mongoose";
-import VersionSchema from "./VersionSchema";
+import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
+import VersionSchema from './VersionSchema';
 
 //create schema
 const userSchema = new VersionSchema({
-  userId: {
+  loginId: {
     type: Schema.Types.ObjectId,
-    ref: "users",
+    ref: 'logins',
     required: true
   },
   name: {
@@ -27,5 +27,5 @@ const userSchema = new VersionSchema({
   }
 });
 
-const User = mongoose.model("users", userSchema);
+const User = mongoose.model('users', userSchema);
 export default User;
