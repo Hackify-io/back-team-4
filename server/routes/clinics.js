@@ -15,24 +15,13 @@ router.get('/', async (req, res) => {
   let response = new ApiResponse();
   const { location, procedure } = req.query;
   try {
-    let clinic = await Clinic.find()
+    let clinic = await Clinic.find({
+      location: location,
+      procedures: procedure
+    })
       .populate('procedures')
       .populate('location');
-    let filteredClinic = clinic
-      .filter(c => {
-        return location
-          ? c.location.toUpperCase() === location.toUpperCase()
-          : true;
-      })
-      .filter(c => {
-        return procedure
-          ? c.procedures.some(p => {
-              return p.name.toUpperCase() === procedure.toUpperCase();
-            })
-          : true;
-      });
-
-    await response.Ok(filteredClinic);
+    await response.Ok(clinic);
     res.status(response.statusCode).json(response);
   } catch (err) {
     response.InternalServerError(err.message);
