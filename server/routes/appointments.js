@@ -65,6 +65,7 @@ router.post('/:clinicId/appointments', async (req, res) => {
   const newAppointment = new Appointment({
     userId: req.body.userId,
     clinicId: req.params.clinicId,
+    userName: req.body.userName,
     procedure: req.body.procedure,
     date: req.body.date,
     time: req.body.time,
