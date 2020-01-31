@@ -1,17 +1,17 @@
-import express from "express";
+import express from 'express';
 
 const router = express();
 
-import ApiResponse from "../models/ApiResponse";
+import ApiResponse from '../models/ApiResponse';
 
 //import models
-import { validateAppointmentFields } from "../validations/appointment";
-import Appointment from "../models/Appointment";
+import { validateAppointmentFields } from '../validations/appointment';
+import Appointment from '../models/Appointment';
 
 // @route   GET api/appointments
 // @desc    Get appointments
 // @access  Public
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   let response = new ApiResponse();
   let currentClinicId = req.body.clinicId;
   try {
@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
 // @route   GET api/appointments/:id
 // @desc    Get appointments
 // @access  Public
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   let response = new ApiResponse();
   try {
     let appointment = await Appointment.findById(req.params.id);
@@ -42,7 +42,6 @@ router.get("/:id", async (req, res) => {
     await response.Ok(appointment);
     res.status(response.statusCode).json(response);
   } catch (err) {
-    console.log(err);
     await response.InternalServerError(err.message);
     res.status(response.statusCode).json(response);
   }
@@ -51,7 +50,7 @@ router.get("/:id", async (req, res) => {
 // @route   POST api/clinics/:id/appointments
 // @desc    Create appointment for clinic
 // @access  Private
-router.post("/", async (req, res) => {
+router.post('/:clinicId/appointments', async (req, res) => {
   const response = new ApiResponse();
   const { errors, isValid } = validateAppointmentFields(req.body);
 
@@ -66,8 +65,10 @@ router.post("/", async (req, res) => {
   const newAppointment = new Appointment({
     userId: req.body.userId,
     clinicId: req.params.clinicId,
+    procedure: req.body.procedure,
     date: req.body.date,
-    status: "Pending",
+    time: req.body.time,
+    status: 'Pending',
     createdUser: req.body.createdUser,
     createdDate: new Date()
   });
@@ -86,7 +87,7 @@ router.post("/", async (req, res) => {
 // @route   PUT api/clinics/:id/appointments
 // @desc    Update appointment for clinic
 // @access  Private
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   let response = new ApiResponse();
   const { errors, isValid } = validateAppointmentFields(req.body);
 
@@ -136,7 +137,7 @@ router.put("/:id", async (req, res) => {
 // @route   DELETE api/appointments/:id
 // @desc    Delete appointment
 // @access  private
-router.delete("/:id", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   let response = new ApiResponse();
   try {
     let appointment = await Appointment.findById(req.params.id);

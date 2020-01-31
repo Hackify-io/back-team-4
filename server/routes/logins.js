@@ -210,7 +210,7 @@ router.post('/users', async (req, res) => {
   if (isMatch) {
     //Sign the Token
     const payload = {
-      id: login.coorelationId,
+      id: login._id,
       email: login.email,
       role: roles.member
     };

@@ -53,7 +53,7 @@ app.use('/api/logins', logins);
 app.use('/api/procedures', procedures);
 app.use('/api/places', places);
 app.use('/api/clinics', clinics);
-app.use('/api/clinics/:clinicId/appointments', appointments);
+app.use('/api/clinics', appointments);
 app.use('/api/clinics', feedbacks);
 
 const port = process.env.PORT || 5000;
