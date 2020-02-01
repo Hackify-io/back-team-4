@@ -8,13 +8,24 @@ const AppointmentSchema = new VersionSchema({
     ref: 'users',
     required: true
   },
+  userName: {
+    type: String
+  },
   clinicId: {
     type: Schema.Types.ObjectId,
     ref: 'clinics',
     required: true
   },
+  procedure: {
+    type: Schema.Types.ObjectId,
+    ref: 'procedures',
+    required: true
+  },
   date: {
-    type: String
+    type: Date
+  },
+  time: {
+    type: Number
   },
   status: {
     type: String

@@ -1,25 +1,22 @@
-import express from "express";
+import express from 'express';
 
 const router = express();
 
-import ApiResponse from "../models/ApiResponse";
+import ApiResponse from '../models/ApiResponse';
 
 //import models
-import { validateAppointmentFields } from "../validations/appointment";
-import Appointment from "../models/Appointment";
+import { validateAppointmentFields } from '../validations/appointment';
+import Appointment from '../models/Appointment';
 
 // @route   GET api/appointments
 // @desc    Get appointments
 // @access  Public
-router.get("/", async (req, res) => {
+router.get('/clinics/:clinicId/appointments', async (req, res) => {
   let response = new ApiResponse();
-  let currentClinicId = req.body.clinicId;
+  let currentClinicId = req.params.clinicId;
   try {
-    let appointments = await Appointment.find();
-    let appointmentsFiltered = appointments.filter(a => {
-      return a.clinicId === currentClinicId;
-    });
-    response.Ok(appointmentsFiltered);
+    let appointments = await Appointment.find({ clinicId: currentClinicId });
+    response.Ok(appointments);
     res.status(response.statusCode).json(response);
   } catch (err) {
     response.InternalServerError(err.message);
@@ -30,7 +27,7 @@ router.get("/", async (req, res) => {
 // @route   GET api/appointments/:id
 // @desc    Get appointments
 // @access  Public
-router.get("/:id", async (req, res) => {
+router.get('/appointments/:id', async (req, res) => {
   let response = new ApiResponse();
   try {
     let appointment = await Appointment.findById(req.params.id);
@@ -42,7 +39,6 @@ router.get("/:id", async (req, res) => {
     await response.Ok(appointment);
     res.status(response.statusCode).json(response);
   } catch (err) {
-    console.log(err);
     await response.InternalServerError(err.message);
     res.status(response.statusCode).json(response);
   }
@@ -51,7 +47,7 @@ router.get("/:id", async (req, res) => {
 // @route   POST api/clinics/:id/appointments
 // @desc    Create appointment for clinic
 // @access  Private
-router.post("/", async (req, res) => {
+router.post('/clinics/:clinicId/appointments', async (req, res) => {
   const response = new ApiResponse();
   const { errors, isValid } = validateAppointmentFields(req.body);
 
@@ -62,12 +58,14 @@ router.post("/", async (req, res) => {
 
     return res.status(response.statusCode).json(response);
   }
-
   const newAppointment = new Appointment({
     userId: req.body.userId,
     clinicId: req.params.clinicId,
+    userName: req.body.userName,
+    procedure: req.body.procedure,
     date: req.body.date,
-    status: "Pending",
+    time: req.body.time,
+    status: 'Pending',
     createdUser: req.body.createdUser,
     createdDate: new Date()
   });
@@ -86,7 +84,7 @@ router.post("/", async (req, res) => {
 // @route   PUT api/clinics/:id/appointments
 // @desc    Update appointment for clinic
 // @access  Private
-router.put("/:id", async (req, res) => {
+router.put('/appointments/:id', async (req, res) => {
   let response = new ApiResponse();
   const { errors, isValid } = validateAppointmentFields(req.body);
 
@@ -110,20 +108,14 @@ router.put("/:id", async (req, res) => {
     await response.InternalServerError(err.message);
     res.status(response.statusCode).json(response);
   }
-
-  const updatedAppointment = {
-    userId: req.body.userId,
-    clinicId: req.body.clinicId,
-    date: req.body.date,
-    state: req.body.status,
-    modifiedUser: req.body.modifiedUser,
-    modifiedDate: new Date()
-  };
-
+  appointment.userId = req.body.userId;
+  appointment.clinicId = req.body.clinicId;
+  appointment.date = req.body.date;
+  appointment.status = req.body.status;
+  appointment.modifiedUser = req.body.modifiedUser;
+  appointment.modifiedDate = new Date();
   try {
-    let updateResponse = await Appointment.findOneAndUpdate(req.params.id, {
-      $set: updatedAppointment
-    });
+    let updateResponse = await appointment.save();
     let updatedModel = await Appointment.findById(updateResponse._id);
     await response.Ok(updatedModel);
     res.status(response.statusCode).json(response);
@@ -136,7 +128,7 @@ router.put("/:id", async (req, res) => {
 // @route   DELETE api/appointments/:id
 // @desc    Delete appointment
 // @access  private
-router.delete("/:id", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   let response = new ApiResponse();
   try {
     let appointment = await Appointment.findById(req.params.id);

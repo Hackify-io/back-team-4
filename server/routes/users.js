@@ -44,6 +44,7 @@ router.post('/', async (req, res) => {
   }
 
   const newUser = new Users({
+    loginId: req.body.loginId,
     name: req.body.name,
     lastname: req.body.lastname,
     age: req.body.age,
