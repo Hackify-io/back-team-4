@@ -21,7 +21,6 @@ const app = express();
 import cors from 'cors';
 
 //data seed helper
-import { seedClinics } from './helpers/clinicsSeedMethod';
 import { seedProcedures } from './helpers/proceduresSeedMethod';
 import { seedPlaces } from './helpers/placesSeedMethod';
 
