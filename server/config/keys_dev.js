@@ -1,4 +1,6 @@
-export const keys = {
-  mongoURI: 'mongodb://localhost:27017/medicaltravel',
-  authSecret: 'medtravelSecret'
+const keys = {
+  mongoURI: '',
+  authSecret: ''
 };
+
+export default keys;

@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import path from 'path';
 import { keys } from './config/keys';
-
+console.log(keys);
 //Routes
 import users from './routes/users';
 import logins from './routes/logins';
@@ -32,7 +32,7 @@ const db = keys.mongoURI;
 
 //Mongoose
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 
@@ -56,7 +56,7 @@ app.use('/api', appointments);
 app.use('/api/clinics', feedbacks);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
 
 seedProcedures();
 seedPlaces();
