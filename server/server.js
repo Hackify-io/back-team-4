@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import path from 'path';
 import { keys } from './config/keys';
-console.log(keys);
+
 //Routes
 import users from './routes/users';
 import logins from './routes/logins';
