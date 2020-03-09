@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
 import VersionSchema from './VersionSchema';
-
+import mongoose from 'mongoose';
 //Create Schema
 const LoginSchema = new VersionSchema({
   email: {
@@ -14,7 +13,8 @@ const LoginSchema = new VersionSchema({
   role: {
     type: String,
     required: true
-  }
+  },
+  externalLogins: [{provider:'string', id: 'string'}]
 });
 
 const Login = mongoose.model('logins', LoginSchema);
