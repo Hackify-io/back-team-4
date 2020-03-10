@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../server/constants/constants.js"],"names":["roles","member","clinic"],"mappings":";;;;;AAAO,IAAMA,wBAAQ;AACnBC,UAAQ,QADW;AAEnBC,UAAQ;AAFW,CAAd","file":"constants.js","sourcesContent":["export const roles = {\r\n  member: 'member',\r\n  clinic: 'clinic'\r\n};\r\n"]}

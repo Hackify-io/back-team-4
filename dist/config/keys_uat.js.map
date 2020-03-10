@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../server/config/keys_uat.js"],"names":["keys","mongoURI","authSecret"],"mappings":";;;;;AAAA,IAAMA,OAAO;AACTC,cAAU,EADD;AAETC,gBAAY;AAFH,CAAb;;kBAKeF,I","file":"keys_uat.js","sourcesContent":["const keys = {\r\n    mongoURI: '',\r\n    authSecret: ''\r\n};\r\n  \r\nexport default keys;"]}
