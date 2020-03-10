@@ -3,13 +3,13 @@ import * as devKeys from '../config/keys_dev';
 import * as uatKeys from '../config/keys_uat';
 import * as prodKeys from '../config/keys_prod';
 let keysHolder;
-if (process.env.NODE_ENV === 'PROD') {
+if (process.env.NODE_ENV === 'production') {
   keysHolder = prodKeys;
-} else if (process.env.NODE_ENV === 'UAT') {
+} else if (process.env.NODE_ENV === 'uat') {
   keysHolder = uatKeys;
-} else if (process.env.NODE_ENV === 'DEV') {
+} else if (process.env.NODE_ENV === 'dev') {
   keysHolder = devKeys;
 } else {
-    keysHolder = localKeys;
+    keysHolder = devKeys;
 }
 export const keys = keysHolder.default;

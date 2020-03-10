@@ -4,10 +4,12 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import passport from 'passport';
+import ip from 'ip';
 import path from 'path';
 import { keys } from './config/keys';
 
 //Routes
+import healthCheck from './routes/healthcheck';
 import users from './routes/users';
 import logins from './routes/logins';
 import procedures from './routes/procedures';
@@ -26,15 +28,17 @@ import { seedPlaces } from './helpers/placesSeedMethod';
 
 //Enable CORS
 app.use(cors());
-
 //DB Config
 const db = keys.mongoURI;
-
+console.log(db);
+console.log('/////////////');
+console.log(db);
+console.log('/////////////');
 //Mongoose
 mongoose
   .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+  .catch(err => console.log(`Mongoose Error(${ip.address()}):`, err));
 
 //Body Parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -47,6 +51,7 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 //API Routes
+app.use('/api/healthcheck', healthCheck);
 app.use('/api/users', users);
 app.use('/api/logins', logins);
 app.use('/api/procedures', procedures);
@@ -55,8 +60,10 @@ app.use('/api/clinics', clinics);
 app.use('/api', appointments);
 app.use('/api/clinics', feedbacks);
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
+// const port = process.env.PORT || 5000;
+// app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
 
 seedProcedures();
 seedPlaces();
+
+export default app;
