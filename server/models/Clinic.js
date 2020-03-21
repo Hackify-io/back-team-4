@@ -17,14 +17,21 @@ const clinicSchema = new VersionSchema({
     type: String,
     required: true
   },
+  imgs: {
+    type: [String]
+  },
   specialties: [{ type: Schema.Types.ObjectId, ref: 'specialties' }],
-  feedbacks: [{ type: Object }],
   location: {
     type: Schema.Types.ObjectId,
     ref: 'places'
   },
-  imgs: {
-    type: [String]
+  doctors: [{ type: Schema.Types.ObjectId, ref: 'doctors' }],
+  averageTime: {
+    years:'number',
+    months:'number'
+  },
+  averageCost: {
+    type: Number
   }
 });
 
