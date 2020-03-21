@@ -24,9 +24,8 @@ const app = express();
 import cors from 'cors';
 
 //data seed helper
-import { seedSpecialties } from './helpers/specialtiesSeedMethod';
-import { seedPlaces } from './helpers/placesSeedMethod';
-import { seedDoctors } from './helpers/doctorsSeedMethod';
+import { seedDb } from './helpers/dataSeeder';
+
 
 //Enable CORS
 app.use(cors());
@@ -66,8 +65,6 @@ app.use('/api/clinics', feedbacks);
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
 
-seedSpecialties();
-seedPlaces();
-seedDoctors();
+seedDb();
 
 export default app;
