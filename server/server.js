@@ -12,7 +12,7 @@ import { keys } from './config/keys';
 import healthCheck from './routes/healthcheck';
 import users from './routes/users';
 import logins from './routes/logins';
-import procedures from './routes/procedures';
+import specialties from './routes/specialties';
 import places from './routes/places';
 import clinics from './routes/clinics';
 import appointments from './routes/appointments';
@@ -23,7 +23,7 @@ const app = express();
 import cors from 'cors';
 
 //data seed helper
-import { seedProcedures } from './helpers/proceduresSeedMethod';
+import { seedSpecialties } from './helpers/specialtiesSeedMethod';
 import { seedPlaces } from './helpers/placesSeedMethod';
 
 //Enable CORS
@@ -54,16 +54,16 @@ require('./config/passport')(passport);
 app.use('/api/healthcheck', healthCheck);
 app.use('/api/users', users);
 app.use('/api/logins', logins);
-app.use('/api/procedures', procedures);
+app.use('/api/specialties', specialties);
 app.use('/api/places', places);
 app.use('/api/clinics', clinics);
 app.use('/api', appointments);
 app.use('/api/clinics', feedbacks);
 
-// const port = process.env.PORT || 5000;
-// app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
 
-seedProcedures();
+seedSpecialties();
 seedPlaces();
 
 export default app;

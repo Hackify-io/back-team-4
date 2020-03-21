@@ -1,7 +1,7 @@
 import validator from "validator";
 import { isEmpty, isRequired } from "./is-empty";
 
-export const validateProcedureFields = data => {
+export const validateSpecialtyFields = data => {
   let errors = {};
 
   data.name = isRequired(data.name);

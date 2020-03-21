@@ -13,20 +13,15 @@ const clinicSchema = new VersionSchema({
     type: String,
     required: true
   },
-  procedures: [{ type: Schema.Types.ObjectId, ref: 'procedures' }],
+  description: {
+    type: String,
+    required: true
+  },
+  specialties: [{ type: Schema.Types.ObjectId, ref: 'specialties' }],
   feedbacks: [{ type: Object }],
   location: {
     type: Schema.Types.ObjectId,
     ref: 'places'
-  },
-  address: {
-    type: String
-  },
-  telephone: {
-    type: String
-  },
-  description: {
-    type: String
   },
   imgs: {
     type: [String]
