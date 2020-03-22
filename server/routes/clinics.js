@@ -1,26 +1,27 @@
-import express from 'express';
+import express from "express";
 
 const router = express();
 
-import ApiResponse from '../models/ApiResponse';
+import ApiResponse from "../models/ApiResponse";
 
 //import models
-import Clinic from '../models/Clinic';
-import { validateClinicFields } from '../validations/clinic';
+import Clinic from "../models/Clinic";
+import { validateClinicFields } from "../validations/clinic";
 
 // @route   GET api/clinics?{filters}
 // @desc    Get clinics using filter
 // @access  Public
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   let response = new ApiResponse();
   const { location, specialty } = req.query;
+  console.log(location, specialty);
   try {
     let clinic = await Clinic.find({
       location: location,
       specialties: specialty
     })
-      .populate('specialties')
-      .populate('location');
+      .populate("specialties")
+      .populate("location");
     await response.Ok(clinic);
     res.status(response.statusCode).json(response);
   } catch (err) {
@@ -32,12 +33,12 @@ router.get('/', async (req, res) => {
 // @route   GET api/clinics/:id
 // @desc    Get clinics
 // @access  Private
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   let response = new ApiResponse();
   try {
     let clinic = await Clinic.findById(req.params.id)
-      .populate('specialties')
-      .populate('location');
+      .populate("specialties")
+      .populate("location");
     if (!clinic) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
@@ -54,7 +55,7 @@ router.get('/:id', async (req, res) => {
 // @route   POST api/clinics
 // @desc    Create clinics
 // @access  Private
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const response = new ApiResponse();
   const { errors, isValid } = validateClinicFields(req.body);
 
@@ -93,7 +94,7 @@ router.post('/', async (req, res) => {
 // @route   PUT api/clinics
 // @desc    Update clinics
 // @access  Private
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   let response = new ApiResponse();
   const { errors, isValid } = validateClinicFields(req.body);
 
@@ -147,7 +148,7 @@ router.put('/:id', async (req, res) => {
 // @route   DELETE api/clinics/:id
 // @desc    Delete clinic
 // @access  private
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   let response = new ApiResponse();
   try {
     let clinic = await Clinic.findById(req.params.id);
