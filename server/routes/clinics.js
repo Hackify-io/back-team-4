@@ -13,13 +13,13 @@ import { validateClinicFields } from '../validations/clinic';
 // @access  Public
 router.get('/', async (req, res) => {
   let response = new ApiResponse();
-  const { location, procedure } = req.query;
+  const { location, specialty } = req.query;
   try {
     let clinic = await Clinic.find({
       location: location,
-      procedures: procedure
+      specialties: specialty
     })
-      .populate('procedures')
+      .populate('specialties')
       .populate('location');
     await response.Ok(clinic);
     res.status(response.statusCode).json(response);
@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
   let response = new ApiResponse();
   try {
     let clinic = await Clinic.findById(req.params.id)
-      .populate('procedures')
+      .populate('specialties')
       .populate('location');
     if (!clinic) {
       await response.NotFound();
@@ -74,7 +74,7 @@ router.post('/', async (req, res) => {
     address: req.body.address,
     feedback: [],
     telephone: req.body.telephone,
-    procedures: req.body.procedures,
+    specialties: req.body.specialties,
     description: req.body.description,
     imgs: req.body.imgs,
     createdDate: new Date()
@@ -124,7 +124,7 @@ router.put('/:id', async (req, res) => {
     address: req.body.address,
     feedback: req.body.feedback,
     telephone: req.body.telephone,
-    procedures: req.body.procedures,
+    specialties: req.body.specialties,
     description: req.body.description,
     imgs: req.body.imgs,
     modifiedUser: req.body.modifiedUser,

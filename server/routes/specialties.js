@@ -5,17 +5,17 @@ const router = express();
 import ApiResponse from "../models/ApiResponse";
 
 //import models
-import Procedure from "../models/Procedure";
-import { validateProcedureFields } from "../validations/procedure";
+import Specialty from "../models/Specialty";
+import { validateSpecialtyFields } from "../validations/specialty";
 
-// @route   GET api/procedures
-// @desc    Get procedures
+// @route   GET api/specialties
+// @desc    Get specialties
 // @access  Public
 router.get("/", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let procedures = await Procedure.find();
-    response.Ok(procedures);
+    let specialties = await Specialty.find();
+    response.Ok(specialties);
     res.status(response.statusCode).json(response);
   } catch (err) {
     response.InternalServerError(err.message);
@@ -23,19 +23,19 @@ router.get("/", async (req, res) => {
   }
 });
 
-// @route   GET api/procedures/:id
-// @desc    Get procedures
+// @route   GET api/specialties/:id
+// @desc    Get specialties
 // @access  Public
 router.get("/:id", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let procedure = await Procedure.findById(req.params.id);
-    if (!procedure) {
+    let specialty = await Specialty.findById(req.params.id);
+    if (!specialty) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
     }
 
-    await response.Ok(procedure);
+    await response.Ok(specialty);
     res.status(response.statusCode).json(response);
   } catch (err) {
     console.log(err);
@@ -44,12 +44,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// @route   POST api/procedures
-// @desc    Create procedures
+// @route   POST api/specialties
+// @desc    Create specialties
 // @access  Private
 router.post("/", async (req, res) => {
   const response = new ApiResponse();
-  const { errors, isValid } = validateProcedureFields(req.body);
+  const { errors, isValid } = validateSpecialtyFields(req.body);
   // Check Validation
   if (!isValid) {
     // If any errors, send 400 with errors object
@@ -58,14 +58,14 @@ router.post("/", async (req, res) => {
     return res.status(response.statusCode).json(response);
   }
 
-  const newProcedure = new Procedure({
+  const newSpecialty = new Specialty({
     name: req.body.name,
     createdUser: req.body.createdUser,
     createdDate: new Date()
   });
 
   try {
-    const postResponse = await newProcedure.save();
+    const postResponse = await newSpecialty.save();
 
     await response.Ok(postResponse);
     res.status(response.statusCode).json(response);
@@ -77,7 +77,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   let response = new ApiResponse();
-  const { errors, isValid } = validateProcedureFields(req.body);
+  const { errors, isValid } = validateSpecialtyFields(req.body);
 
   // Check Validation
   if (!isValid) {
@@ -87,11 +87,11 @@ router.put("/:id", async (req, res) => {
     return res.status(response.statusCode).json(response);
   }
 
-  //Look if procedure Exist
-  let procedure;
+  //Look if specialty Exist
+  let specialty;
   try {
-    procedure = await Procedure.findById(req.params.id);
-    if (!procedure) {
+    specialty = await Specialty.findById(req.params.id);
+    if (!specialty) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
     }
@@ -100,17 +100,17 @@ router.put("/:id", async (req, res) => {
     res.status(response.statusCode).json(response);
   }
 
-  const updatedProcedure = {
+  const updatedSpecialty = {
     name: req.body.name,
     modifiedUser: req.body.modifiedUser,
     modifiedDate: new Date()
   };
 
   try {
-    let updateResponse = await Procedure.findOneAndUpdate(req.params.id, {
-      $set: updatedProcedure
+    let updateResponse = await Specialty.findOneAndUpdate(req.params.id, {
+      $set: updatedSpecialty
     });
-    let updatedModel = await Procedure.findById(updateResponse._id);
+    let updatedModel = await Specialty.findById(updateResponse._id);
     await response.Ok(updatedModel);
     res.status(response.statusCode).json(response);
   } catch (err) {
@@ -119,18 +119,18 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// @route   DELETE api/procedures/:id
-// @desc    Delete procedure
+// @route   DELETE api/specialties/:id
+// @desc    Delete specialty
 // @access  private
 router.delete("/:id", async (req, res) => {
   let response = new ApiResponse();
   try {
-    let procedure = await Procedure.findById(req.params.id);
-    if (!procedure) {
+    let specialty = await Specialty.findById(req.params.id);
+    if (!specialty) {
       await response.NotFound();
       return res.status(response.statusCode).json(response);
     }
-    await procedure.remove();
+    await specialty.remove();
     await response.NoContent();
     res.status(response.statusCode).json(response);
   } catch (err) {

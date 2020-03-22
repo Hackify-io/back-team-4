@@ -13,23 +13,26 @@ const clinicSchema = new VersionSchema({
     type: String,
     required: true
   },
-  procedures: [{ type: Schema.Types.ObjectId, ref: 'procedures' }],
-  feedbacks: [{ type: Object }],
+  description: {
+    type: String,
+    required: true
+  },
+  images: {
+    type: [String]
+  },
+  specialties: [{ type: Schema.Types.ObjectId, ref: 'specialties' }],
   location: {
     type: Schema.Types.ObjectId,
     ref: 'places'
   },
-  address: {
-    type: String
+  doctors: [{ type: Schema.Types.ObjectId, ref: 'doctors' }],
+  rates: [{type: Schema.Types.ObjectId, ref: 'clinicrates'}],
+  averageTime: {
+    hours:'number',
+    minutes:'number'
   },
-  telephone: {
-    type: String
-  },
-  description: {
-    type: String
-  },
-  imgs: {
-    type: [String]
+  averageCost: {
+    type: Number
   }
 });
 
