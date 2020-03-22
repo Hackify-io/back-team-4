@@ -53,20 +53,9 @@ router.put("/:id", async (req, res) => {
 // @desc    Delete specialty
 // @access  private
 router.delete("/:id", async (req, res) => {
-  let response = new ApiResponse();
-  try {
-    let specialty = await Specialty.findById(req.params.id);
-    if (!specialty) {
-      await response.NotFound();
-      return res.status(response.statusCode).json(response);
-    }
-    await specialty.remove();
-    await response.NoContent();
-    res.status(response.statusCode).json(response);
-  } catch (err) {
-    await response.InternalServerError(err.message);
-    res.status(response.statusCode).json(response);
-  }
+  let id = req.params.id;
+  let response = await Repository.remove(Specialty, id);
+  return res.status(response.statusCode).json(response);
 });
 
 export default router;
