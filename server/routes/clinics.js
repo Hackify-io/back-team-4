@@ -14,12 +14,13 @@ import { validateClinicFields } from "../validations/clinic";
 router.get("/", async (req, res) => {
   let response = new ApiResponse();
   const { location, specialty } = req.query;
-  console.log(location, specialty);
+
+  const filters = {
+    ...(specialty ? { specialties: specialty } : {}),
+    ...(location ? { location: location } : {})
+  };
   try {
-    let clinic = await Clinic.find({
-      location: location,
-      specialties: specialty
-    })
+    let clinic = await Clinic.find(filters)
       .populate("specialties")
       .populate("location");
     await response.Ok(clinic);
