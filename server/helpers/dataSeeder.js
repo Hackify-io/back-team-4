@@ -5,6 +5,9 @@ import { seedDoctors } from './doctorsSeedMethod';
 import { seedRateTypes } from './rateTypesSeedMethod';
 import { seedUsers } from './userSeedMethod';
 import { seedClinics } from './clinicSeedMethod';
+import { seedClinicReviews } from './clinicReviewSeedMethod';
+import { seedClinicRates } from './clinicRateSeedMethod';
+
 
 export const seedDb = async () => {
     //Seed Independient Entities
@@ -16,4 +19,8 @@ export const seedDb = async () => {
     //Seed Dependant Entities
     await seedUsers();
     await seedClinics();
+
+    //Seed More Dependant Entities
+    await seedClinicReviews();
+    await seedClinicRates();
 }
