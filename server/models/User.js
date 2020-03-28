@@ -24,6 +24,9 @@ const userSchema = new VersionSchema({
   gender: {
     type: String,
     required: true
+  },
+  avatar : {
+    type: String
   }
 });
 

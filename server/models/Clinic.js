@@ -27,6 +27,7 @@ const clinicSchema = new VersionSchema({
   },
   doctors: [{ type: Schema.Types.ObjectId, ref: 'doctors' }],
   rates: [{type: Schema.Types.ObjectId, ref: 'clinicrates'}],
+  reviews: [{type: Schema.Types.ObjectId, ref: 'clinicreviews'}],
   averageTime: {
     hours:'number',
     minutes:'number'

@@ -3,6 +3,7 @@ import express from "express";
 const router = express();
 
 import ApiResponse from "../models/ApiResponse";
+import Repository from "./../services/repository";
 
 //import models
 import Clinic from "../models/Clinic";
@@ -12,23 +13,15 @@ import { validateClinicFields } from "../validations/clinic";
 // @desc    Get clinics using filter
 // @access  Public
 router.get("/", async (req, res) => {
-  let response = new ApiResponse();
   const { location, specialty } = req.query;
-
-  const filters = {
-    ...(specialty ? { specialties: specialty } : {}),
+  let filter = {
+    ...(specialty ? { specialty: specialty } : {}),
     ...(location ? { location: location } : {})
   };
-  try {
-    let clinic = await Clinic.find(filters)
-      .populate("specialties")
-      .populate("location");
-    await response.Ok(clinic);
-    res.status(response.statusCode).json(response);
-  } catch (err) {
-    response.InternalServerError(err.message);
-    res.status(response.statusCode).json(response);
-  }
+  let populate = ["specialties", "location", "doctors", "rates", "reviews"];
+  1;
+  let response = await Repository.getAll(Clinic, filter, populate);
+  res.status(response.statusCode).json(response);
 });
 
 // @route   GET api/clinics/:id

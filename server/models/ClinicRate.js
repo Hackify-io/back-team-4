@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import VersionSchema from "./VersionSchema";
+import { Schema } from 'mongoose';
 //Create Schema
 const ClinicRateSchema = new VersionSchema({
   clinicId: {
