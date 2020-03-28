@@ -9,7 +9,8 @@ export const seedUsers = async () => {
       name: "John",
       lastname: "Doe",
       age: 30,
-      gender: "Male"
+      gender: "Male",
+      avatar: "https://images.vexels.com/media/users/3/145908/preview2/52eabf633ca6414e60a7677b0b917d92-creador-de-avatar-masculino.jpg"
     }
   ];
 
@@ -34,7 +35,8 @@ export const seedUsers = async () => {
           name: pl.name,
           lastname: pl.lastname,
           age: pl.age,
-          gender: pl.gender
+          gender: pl.gender,
+          avatar: pl.avatar
       });
 
       await user.save();

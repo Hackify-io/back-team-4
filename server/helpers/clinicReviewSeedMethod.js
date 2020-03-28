@@ -19,19 +19,23 @@ export const seedClinicReviews = async () => {
   ];
 
   for (const pl of clinicReviews) {
-    //conditions to determine if a clinic is not considered to insert
-    const clinicReviewExist = await ClinicReview.findOne({
-        review: pl
-    });
-    if (!clinicReviewExist) {
-        const clinicReview = new ClinicReview({
-            userId : user._id,
-            clinicId: clinic._id,
-            review:pl
-        });
-        const reviewFromRepo = await clinicReview.save();
-        clinic.reviews.push(reviewFromRepo._id);
-        await clinic.save();
+    for(const cli of clinicFromRepo){
+      //conditions to determine if a clinic is not considered to insert
+      const clinicReviewExist = await ClinicReview.findOne({
+        review: pl,
+        clinicId:cli._id
+      });
+      if (!clinicReviewExist) {
+          const clinicReview = new ClinicReview({
+              userId : user._id,
+              clinicId: cli._id,
+              review:pl
+          });
+          const reviewFromRepo = await clinicReview.save();
+          cli.reviews.push(reviewFromRepo._id);
+          await cli.save();
+      }
     }
+    
   }
 };

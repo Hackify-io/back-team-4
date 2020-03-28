@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     ...(specialty ? { specialty: specialty } : {}),
     ...(location ? { location: location } : {})
   }
-  let populate = ['specialties','location','doctors', 'rates', 'reviews'];
+  let populate = ['specialties','location','doctors', 'rates', 'reviews'];1
   let response = await Repository.getAll(Clinic, filter, populate);
   res.status(response.statusCode).json(response);
 });

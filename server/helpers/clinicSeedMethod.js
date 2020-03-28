@@ -23,6 +23,78 @@ export const seedClinics = async () => {
         minutes: 30
       },
       averageCost:3
+    },
+    {
+      email: "clinic2@mtravel.com",
+      password: "$2a$10$jsja/4phQg1D9/XQF4nVoOn2sYDztCSeLOHk9lYeksmp50Th.snji",//Clinic123
+      role: "clinic",
+      name: "ISSSTECALI",
+      description: "Aqui te mueres",
+      images: [
+        "https://static.dentaldepartures.com/clinics/dd_201604030325_5397cbeba0bbf.jpg",
+        "https://hospitalcmq.com/wp-content/uploads/2018/06/walkingclinic.jpg",
+        "https://www.lavanguardia.com/r/GODO/LV/p6/WebSite/2019/03/19/Recortada/img_xcervera_20190317-230448_imagenes_lv_propias_xcervera_xcervera_s9a0502hospclinic_4_6_1101864324-kujH-U461037507323eGD-992x558@LaVanguardia-Web.jpg",
+        "https://healthengine.com.au/info/assets/photo-1519494140681-8b17d830a3e9-1024x680.jpeg"
+      ],
+      averageTime:{
+        hours: 4,
+        minutes: 30
+      },
+      averageCost:5
+    },
+    {
+      email: "clinic3@mtravel.com",
+      password: "$2a$10$jsja/4phQg1D9/XQF4nVoOn2sYDztCSeLOHk9lYeksmp50Th.snji",//Clinic123
+      role: "clinic",
+      name: "Del Delicioso 2.0",
+      description: "Del Delicioso reloaded is the centerpiece of each resident’s community outpatient experience. EBMC is located off-campus in one of the most underserved and disadvantaged communities in the city.",
+      images: [
+        "https://static.dentaldepartures.com/clinics/dd_201604030325_5397cbeba0bbf.jpg",
+        "https://hospitalcmq.com/wp-content/uploads/2018/06/walkingclinic.jpg",
+        "https://www.lavanguardia.com/r/GODO/LV/p6/WebSite/2019/03/19/Recortada/img_xcervera_20190317-230448_imagenes_lv_propias_xcervera_xcervera_s9a0502hospclinic_4_6_1101864324-kujH-U461037507323eGD-992x558@LaVanguardia-Web.jpg",
+        "https://healthengine.com.au/info/assets/photo-1519494140681-8b17d830a3e9-1024x680.jpeg"
+      ],
+      averageTime:{
+        hours: 1,
+        minutes: 0
+      },
+      averageCost:2
+    },
+    {
+      email: "clinic4@mtravel.com",
+      password: "$2a$10$jsja/4phQg1D9/XQF4nVoOn2sYDztCSeLOHk9lYeksmp50Th.snji",//Clinic123
+      role: "clinic",
+      name: "CardioMex",
+      description: "HealthCare",
+      images: [
+        "https://static.dentaldepartures.com/clinics/dd_201604030325_5397cbeba0bbf.jpg",
+        "https://hospitalcmq.com/wp-content/uploads/2018/06/walkingclinic.jpg",
+        "https://www.lavanguardia.com/r/GODO/LV/p6/WebSite/2019/03/19/Recortada/img_xcervera_20190317-230448_imagenes_lv_propias_xcervera_xcervera_s9a0502hospclinic_4_6_1101864324-kujH-U461037507323eGD-992x558@LaVanguardia-Web.jpg",
+        "https://healthengine.com.au/info/assets/photo-1519494140681-8b17d830a3e9-1024x680.jpeg"
+      ],
+      averageTime:{
+        hours: 1,
+        minutes: 30
+      },
+      averageCost:3
+    },
+    {
+      email: "clinic5@mtravel.com",
+      password: "$2a$10$jsja/4phQg1D9/XQF4nVoOn2sYDztCSeLOHk9lYeksmp50Th.snji",//Clinic123
+      role: "clinic",
+      name: "PanchitoPistolas",
+      description: "MasterPiece",
+      images: [
+        "https://static.dentaldepartures.com/clinics/dd_201604030325_5397cbeba0bbf.jpg",
+        "https://hospitalcmq.com/wp-content/uploads/2018/06/walkingclinic.jpg",
+        "https://www.lavanguardia.com/r/GODO/LV/p6/WebSite/2019/03/19/Recortada/img_xcervera_20190317-230448_imagenes_lv_propias_xcervera_xcervera_s9a0502hospclinic_4_6_1101864324-kujH-U461037507323eGD-992x558@LaVanguardia-Web.jpg",
+        "https://healthengine.com.au/info/assets/photo-1519494140681-8b17d830a3e9-1024x680.jpeg"
+      ],
+      averageTime:{
+        hours: 1,
+        minutes: 30
+      },
+      averageCost:3
     }
   ];
 

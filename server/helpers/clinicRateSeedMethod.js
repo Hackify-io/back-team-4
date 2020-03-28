@@ -15,7 +15,6 @@ export const seedClinicRates = async () => {
 
   //Get One Clinic
   const clinicFromRepo = await Clinic.find({});
-  const clinic = await clinicFromRepo[0];
   const clinicRates = [
     {
         value: 5
@@ -23,20 +22,24 @@ export const seedClinicRates = async () => {
   ];
 
   for (const pl of clinicRates) {
-    //conditions to determine if a clinic is not considered to insert
-    const clinicRateExist = await ClinicRate.findOne({
-        userId: user._id
-    });
-    if (!clinicRateExist) {
+    for (const cli of clinicFromRepo){
+      //conditions to determine if a clinic is not considered to insert
+      const clinicRateExist = await ClinicRate.findOne({
+        userId: user._id,
+        clinicId: cli._id
+      });
+      if (!clinicRateExist) {
         const clinicRate = new ClinicRate({
             userId : user._id,
-            clinicId: clinic._id,
+            clinicId: cli._id,
             rateTypeId: rateType._id,
             value:pl.value
         });
         const rateFromRepo = await clinicRate.save();
-        clinic.rates.push(rateFromRepo._id);
-        await clinic.save();
+        cli.rates.push(rateFromRepo._id);
+        await cli.save();
+      }
     }
+    
   }
 };

@@ -16,6 +16,7 @@ import {
 
 //Load Models
 import Login from '../models/Login';
+import User from '../models/User';
 import Clinic from '../models/Clinic';
 import ApiResponse from '../models/ApiResponse';
 
@@ -213,15 +214,23 @@ router.post('/users', async (req, res) => {
 
   //If login exist encrypt password and validate model
   const login = getLoginResponse.result[0];
+  const getUserResponse = await Repository.getAll(User, { loginId: login._id });
+  const user = getUserResponse.result[0];
   const isMatch = await bcrypt.compare(loginRequest.password, login.password);
   if (isMatch) {
     //Sign the Token
     const payload = {
       id: login._id,
+      userData:{
+        id: user._id,
+        name: user.name,
+        lastname: user.lastname,
+        avatar: user.avatar
+      },
       email: login.email,
       role: roles.member
     };
-
+    console.log(payload);
     jwt.sign(
       payload,
       keys.authSecret,
