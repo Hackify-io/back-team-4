@@ -12,15 +12,14 @@ import { validateFeedbackFields } from "../validations/feedback";
 // @desc    Add feedback to clinic
 // @access  Private
 router.post("/:clinicId/feedbacks/", async (req, res) => {
-  
   //Get Prerequirments: Clinic by ClinicId
   let getClinicResponse = {};
-  //If Clinic is null 
-  if(!getClinicResponse.isSuccess){
+  //If Clinic is null
+  if (!getClinicResponse.isSuccess) {
     res.status(getClinicResponse.statusCode).json(getClinicResponse);
   }
   const clinic = getClinicResponse.result;
-  
+
   //Create the ClinicReview using the ClinicId
 
   res.status(response.statusCode).json(response);

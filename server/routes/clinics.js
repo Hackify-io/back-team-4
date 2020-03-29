@@ -9,6 +9,46 @@ import Repository from "./../services/repository";
 import Clinic from "../models/Clinic";
 import { validateClinicFields } from "../validations/clinic";
 
+import ClinicReview from "../models/ClinicReview";
+
+// @route   POST api/clinics/:id/reviews
+// @desc    Add review to clinic
+// @access  Private
+router.post("/:clinicId/reviews/", async (req, res) => {
+  //Get Prerequirments: Clinic by ClinicId
+  try {
+    let clinic = await Clinic.findById(req.params.clinicId);
+
+    if (!clinic) {
+      await response.NotFound();
+      return res.status(response.statusCode).json(response);
+    }
+
+    //console.log(req.body);
+
+    const newReview = new ClinicReview({
+      modifiedUser: req.body.modifiedUser,
+      username: req.body.username,
+      message: req.body.message
+    });
+
+    clinic.reviews.push(newReview._id);
+    const response = await Repository.update(
+      Clinic,
+      clinic._id,
+      clinic.reviews,
+      validateClinicFields
+    );
+
+    console.log(response);
+
+    return res.status(response.statusCode).json(response);
+  } catch (err) {
+    await response.InternalServerError(err.message);
+    res.status(response.statusCode).json(response);
+  }
+});
+
 // @route   GET api/clinics?{filters}
 // @desc    Get clinics using filter
 // @access  Public
@@ -17,8 +57,9 @@ router.get("/", async (req, res) => {
   let filter = {
     ...(specialty ? { specialty: specialty } : {}),
     ...(location ? { location: location } : {})
-  }
-  let populate = ['specialties','location','doctors', 'rates', 'reviews'];1
+  };
+  let populate = ["specialties", "location", "doctors", "rates", "reviews"];
+  1;
   let response = await Repository.getAll(Clinic, filter, populate);
   res.status(response.statusCode).json(response);
 });
@@ -34,7 +75,7 @@ router.get("/:id", async (req, res) => {
       .populate("location");
     if (!clinic) {
       await response.NotFound();
-      return res.status(response.statusCode).json(response);
+      res.status(response.statusCode).json(response);
     }
 
     await response.Ok(clinic);
