@@ -8,6 +8,7 @@ import Repository from "./../services/repository";
 //import models
 import Clinic from "../models/Clinic";
 import { validateClinicFields } from "../validations/clinic";
+import { validateClinicReviewFields } from "../validations/clinicReview"
 
 import ClinicReview from "../models/ClinicReview";
 
@@ -16,37 +17,36 @@ import ClinicReview from "../models/ClinicReview";
 // @access  Private
 router.post("/:clinicId/reviews/", async (req, res) => {
   //Get Prerequirments: Clinic by ClinicId
-  try {
-    let clinic = await Clinic.findById(req.params.clinicId);
+  const { clinicId } = this.params;
+  const populate = ["reviews"];
+  const getClinicResponse = await Repository.getById(Clinic, clinicId, populate);
 
-    if (!clinic) {
-      await response.NotFound();
-      return res.status(response.statusCode).json(response);
-    }
-
-    //console.log(req.body);
-
-    const newReview = new ClinicReview({
-      modifiedUser: req.body.modifiedUser,
-      username: req.body.username,
-      message: req.body.message
-    });
-
-    clinic.reviews.push(newReview._id);
-    const response = await Repository.update(
-      Clinic,
-      clinic._id,
-      clinic.reviews,
-      validateClinicFields
-    );
-
-    console.log(response);
-
-    return res.status(response.statusCode).json(response);
-  } catch (err) {
-    await response.InternalServerError(err.message);
-    res.status(response.statusCode).json(response);
+  //If there is no Clinic we return not found Clinic by the Repo
+  if(!getClinicResponse.isSuccess){
+    return res.status(getClinicResponse.statusCode).json(getClinicResponse);
   }
+  const currentClinic = getClinicResponse.result;
+
+  //If Clinic Exist we create the Review
+  const createClinicReviewResponse = await Repository.create(
+    ClinicReview,
+    req.body,
+    validateClinicReviewFields
+    );
+  //If the Review Couldnt Be created we return creation Error
+  if(!createClinicReviewResponse.isSuccess){
+    return res.status(createClinicReviewResponse.statusCode).json(createClinicReviewResponse);
+  }
+  const currentReview =createClinicReviewResponse.result;
+
+  //If everything goes well to this point we update clinic reference
+  let currentReviews = currentClinic.reviews;
+  currentReviews.push(currentReview._id);
+  //Updating this way is experimental so we can have an HTTP Response if it does not work use:
+  //currentClinic.reviews.push(currentReview._id)
+  //await currentClinic.save();
+  const updateClinicResponse = await Repository.update(Clinic, currentClinic._id, currentReviews, validateClinicFields);
+  return res.status(updateClinicResponse.statusCode).json(updateClinicResponse);
 });
 
 // @route   GET api/clinics?{filters}

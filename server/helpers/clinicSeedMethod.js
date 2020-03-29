@@ -10,8 +10,8 @@ export const seedClinics = async () => {
       email: "clinic@mtravel.com",
       password: "$2a$10$jsja/4phQg1D9/XQF4nVoOn2sYDztCSeLOHk9lYeksmp50Th.snji",//Clinic123
       role: "clinic",
-      name: "Del Delicioso",
-      description: "Del Delicioso is the centerpiece of each resident’s community outpatient experience. EBMC is located off-campus in one of the most underserved and disadvantaged communities in the city.",
+      name: "Del delicatesen",
+      description: "Del delicatesen is the centerpiece of each resident’s community outpatient experience. EBMC is located off-campus in one of the most underserved and disadvantaged communities in the city.",
       images: [
         "https://static.dentaldepartures.com/clinics/dd_201604030325_5397cbeba0bbf.jpg",
         "https://hospitalcmq.com/wp-content/uploads/2018/06/walkingclinic.jpg",
@@ -46,8 +46,8 @@ export const seedClinics = async () => {
       email: "clinic3@mtravel.com",
       password: "$2a$10$jsja/4phQg1D9/XQF4nVoOn2sYDztCSeLOHk9lYeksmp50Th.snji",//Clinic123
       role: "clinic",
-      name: "Del Delicioso 2.0",
-      description: "Del Delicioso reloaded is the centerpiece of each resident’s community outpatient experience. EBMC is located off-campus in one of the most underserved and disadvantaged communities in the city.",
+      name: "Del delicatesen 2.0",
+      description: "Del delicatesen reloaded is the centerpiece of each resident’s community outpatient experience. EBMC is located off-campus in one of the most underserved and disadvantaged communities in the city.",
       images: [
         "https://static.dentaldepartures.com/clinics/dd_201604030325_5397cbeba0bbf.jpg",
         "https://hospitalcmq.com/wp-content/uploads/2018/06/walkingclinic.jpg",

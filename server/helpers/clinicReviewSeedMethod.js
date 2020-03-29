@@ -14,7 +14,7 @@ export const seedClinicReviews = async () => {
   const clinicReviews = [
     {
         username:`${user.name} ${user.lastname}`,
-        message:"Del Delicioso is the best experience i had in a long time"
+        message:"Del delicatesen is the best experience i had in a long time"
     }
   ];
 
@@ -27,8 +27,8 @@ export const seedClinicReviews = async () => {
       });
       if (!clinicReviewExist) {
           const clinicReview = new ClinicReview({
-              userId : user._id,
-              clinicId: cli._id,
+              user : user._id,
+              clinic: cli._id,
               review:pl
           });
           const reviewFromRepo = await clinicReview.save();
