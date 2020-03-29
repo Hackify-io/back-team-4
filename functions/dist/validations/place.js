@@ -17,14 +17,10 @@ var validatePlaceFields = exports.validatePlaceFields = function validatePlaceFi
   var errors = {};
 
   data.country = (0, _isEmpty.isRequired)(data.country);
-  data.state = (0, _isEmpty.isRequired)(data.state);
   data.city = (0, _isEmpty.isRequired)(data.city);
 
   if (_validator2.default.isEmpty(data.country)) {
     errors.country = "Country field is required";
-  }
-  if (_validator2.default.isEmpty(data.state)) {
-    errors.state = "State field is required";
   }
   if (_validator2.default.isEmpty(data.city)) {
     errors.city = "City field is required";

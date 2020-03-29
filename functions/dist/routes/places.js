@@ -8,6 +8,10 @@ var _express = require("express");
 
 var _express2 = _interopRequireDefault(_express);
 
+var _repository = require("./../services/repository");
+
+var _repository2 = _interopRequireDefault(_repository);
+
 var _ApiResponse = require("../models/ApiResponse");
 
 var _ApiResponse2 = _interopRequireDefault(_ApiResponse);
@@ -32,37 +36,25 @@ var router = (0, _express2.default)();
 // @access  Public
 router.get("/", function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-    var response, places;
+    var response;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            response = new _ApiResponse2.default();
-            _context.prev = 1;
-            _context.next = 4;
-            return _Place2.default.find();
+            _context.next = 2;
+            return _repository2.default.getAll(_Place2.default);
+
+          case 2:
+            response = _context.sent;
+
+            res.status(response.statusCode).json(response);
 
           case 4:
-            places = _context.sent;
-
-            response.Ok(places);
-            res.status(response.statusCode).json(response);
-            _context.next = 13;
-            break;
-
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context["catch"](1);
-
-            response.InternalServerError(_context.t0.message);
-            res.status(response.statusCode).json(response);
-
-          case 13:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[1, 9]]);
+    }, _callee, undefined);
   }));
 
   return function (_x, _x2) {
@@ -75,54 +67,26 @@ router.get("/", function () {
 // @access  Public
 router.get("/:id", function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res) {
-    var response, place;
+    var id, response;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            response = new _ApiResponse2.default();
-            _context2.prev = 1;
-            _context2.next = 4;
-            return _Place2.default.findById(req.params.id);
+            id = req.params.id;
+            _context2.next = 3;
+            return _repository2.default.getById(_Place2.default, id);
 
-          case 4:
-            place = _context2.sent;
+          case 3:
+            response = _context2.sent;
 
-            if (place) {
-              _context2.next = 9;
-              break;
-            }
-
-            _context2.next = 8;
-            return response.NotFound();
-
-          case 8:
-            return _context2.abrupt("return", res.status(response.statusCode).json(response));
-
-          case 9:
-            _context2.next = 11;
-            return response.Ok(place);
-
-          case 11:
-            res.status(response.statusCode).json(response);
-            _context2.next = 19;
-            break;
-
-          case 14:
-            _context2.prev = 14;
-            _context2.t0 = _context2["catch"](1);
-            _context2.next = 18;
-            return response.InternalServerError(_context2.t0.message);
-
-          case 18:
             res.status(response.statusCode).json(response);
 
-          case 19:
+          case 5:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, undefined, [[1, 14]]);
+    }, _callee2, undefined);
   }));
 
   return function (_x3, _x4) {
@@ -135,65 +99,24 @@ router.get("/:id", function () {
 // @access  Private
 router.post("/", function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, res) {
-    var response, _validatePlaceFields, errors, isValid, newPlace, postResponse;
-
+    var response;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            response = new _ApiResponse2.default();
-            _validatePlaceFields = (0, _place.validatePlaceFields)(req.body), errors = _validatePlaceFields.errors, isValid = _validatePlaceFields.isValid;
+            _context3.next = 2;
+            return _repository2.default.create(_Place2.default, req.body, _place.validatePlaceFields);
 
-            // Check Validation
-
-            if (isValid) {
-              _context3.next = 6;
-              break;
-            }
-
-            _context3.next = 5;
-            return response.ValidationError(errors);
-
-          case 5:
+          case 2:
+            response = _context3.sent;
             return _context3.abrupt("return", res.status(response.statusCode).json(response));
 
-          case 6:
-            newPlace = new _Place2.default({
-              country: req.body.country,
-              state: req.body.state,
-              city: req.body.city,
-              createdUser: req.body.createdUser,
-              createdDate: new Date()
-            });
-            _context3.prev = 7;
-            _context3.next = 10;
-            return newPlace.save();
-
-          case 10:
-            postResponse = _context3.sent;
-            _context3.next = 13;
-            return response.Ok(postResponse);
-
-          case 13:
-            res.status(response.statusCode).json(response);
-            _context3.next = 21;
-            break;
-
-          case 16:
-            _context3.prev = 16;
-            _context3.t0 = _context3["catch"](7);
-            _context3.next = 20;
-            return response.InternalServerError(_context3.t0.message);
-
-          case 20:
-            res.status(response.statusCode).json(response);
-
-          case 21:
+          case 4:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, undefined, [[7, 16]]);
+    }, _callee3, undefined);
   }));
 
   return function (_x5, _x6) {
@@ -201,109 +124,30 @@ router.post("/", function () {
   };
 }());
 
+// @route   PUT api/places/id
+// @desc    Update Place
+// @access  Public
 router.put("/:id", function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(req, res) {
-    var response, _validatePlaceFields2, errors, isValid, place, updatedPlace, updateResponse, updatedModel;
-
+    var id, response;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            response = new _ApiResponse2.default();
-            _validatePlaceFields2 = (0, _place.validatePlaceFields)(req.body), errors = _validatePlaceFields2.errors, isValid = _validatePlaceFields2.isValid;
+            id = req.params.id;
+            _context4.next = 3;
+            return _repository2.default.update(_Place2.default, id, req.body, _place.validatePlaceFields);
 
-            // Check Validation
-
-            if (isValid) {
-              _context4.next = 6;
-              break;
-            }
-
-            _context4.next = 5;
-            return response.ValidationError(errors);
+          case 3:
+            response = _context4.sent;
+            return _context4.abrupt("return", res.status(response.statusCode).json(response));
 
           case 5:
-            return _context4.abrupt("return", res.status(response.statusCode).json(response));
-
-          case 6:
-
-            //Look if place Exist
-            place = void 0;
-            _context4.prev = 7;
-            _context4.next = 10;
-            return _Place2.default.findById(req.params.id);
-
-          case 10:
-            place = _context4.sent;
-
-            if (place) {
-              _context4.next = 15;
-              break;
-            }
-
-            _context4.next = 14;
-            return response.NotFound();
-
-          case 14:
-            return _context4.abrupt("return", res.status(response.statusCode).json(response));
-
-          case 15:
-            _context4.next = 22;
-            break;
-
-          case 17:
-            _context4.prev = 17;
-            _context4.t0 = _context4["catch"](7);
-            _context4.next = 21;
-            return response.InternalServerError(_context4.t0.message);
-
-          case 21:
-            res.status(response.statusCode).json(response);
-
-          case 22:
-            updatedPlace = {
-              country: req.body.country,
-              state: req.body.state,
-              city: req.body.city,
-              modifiedUser: req.body.modifiedUser,
-              modifiedDate: new Date()
-            };
-            _context4.prev = 23;
-            _context4.next = 26;
-            return _Place2.default.findOneAndUpdate(req.params.id, {
-              $set: updatedPlace
-            });
-
-          case 26:
-            updateResponse = _context4.sent;
-            _context4.next = 29;
-            return _Place2.default.findById(updateResponse._id);
-
-          case 29:
-            updatedModel = _context4.sent;
-            _context4.next = 32;
-            return response.Ok(updatedModel);
-
-          case 32:
-            res.status(response.statusCode).json(response);
-            _context4.next = 40;
-            break;
-
-          case 35:
-            _context4.prev = 35;
-            _context4.t1 = _context4["catch"](23);
-            _context4.next = 39;
-            return response.InternalServerError(_context4.t1.message);
-
-          case 39:
-            res.status(response.statusCode).json(response);
-
-          case 40:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, undefined, [[7, 17], [23, 35]]);
+    }, _callee4, undefined);
   }));
 
   return function (_x7, _x8) {
@@ -316,58 +160,25 @@ router.put("/:id", function () {
 // @access  private
 router.delete("/:id", function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(req, res) {
-    var response, place;
+    var id, response;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            response = new _ApiResponse2.default();
-            _context5.prev = 1;
-            _context5.next = 4;
-            return _Place2.default.findById(req.params.id);
+            id = req.params.id;
+            _context5.next = 3;
+            return _repository2.default.remove(_Place2.default, id);
 
-          case 4:
-            place = _context5.sent;
-
-            if (place) {
-              _context5.next = 9;
-              break;
-            }
-
-            _context5.next = 8;
-            return response.NotFound();
-
-          case 8:
+          case 3:
+            response = _context5.sent;
             return _context5.abrupt("return", res.status(response.statusCode).json(response));
 
-          case 9:
-            _context5.next = 11;
-            return place.remove();
-
-          case 11:
-            _context5.next = 13;
-            return response.NoContent();
-
-          case 13:
-            res.status(response.statusCode).json(response);
-            _context5.next = 21;
-            break;
-
-          case 16:
-            _context5.prev = 16;
-            _context5.t0 = _context5["catch"](1);
-            _context5.next = 20;
-            return response.InternalServerError(_context5.t0.message);
-
-          case 20:
-            res.status(response.statusCode).json(response);
-
-          case 21:
+          case 5:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, undefined, [[1, 16]]);
+    }, _callee5, undefined);
   }));
 
   return function (_x9, _x10) {

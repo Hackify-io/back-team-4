@@ -32,6 +32,10 @@ var _Login = require('../models/Login');
 
 var _Login2 = _interopRequireDefault(_Login);
 
+var _User = require('../models/User');
+
+var _User2 = _interopRequireDefault(_User);
+
 var _Clinic = require('../models/Clinic');
 
 var _Clinic2 = _interopRequireDefault(_Clinic);
@@ -337,7 +341,7 @@ router.post('/clinics', function () {
 // @access  Public
 router.post('/users', function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(req, res) {
-    var response, _validateLoginFields3, errors, isValid, loginRequest, getLoginResponse, login, isMatch, payload;
+    var response, _validateLoginFields3, errors, isValid, loginRequest, getLoginResponse, login, getUserResponse, user, isMatch, payload;
 
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -383,20 +387,32 @@ router.post('/users', function () {
             //If login exist encrypt password and validate model
             login = getLoginResponse.result[0];
             _context4.next = 17;
-            return _bcryptjs2.default.compare(loginRequest.password, login.password);
+            return _repository2.default.getAll(_User2.default, { loginId: login._id });
 
           case 17:
+            getUserResponse = _context4.sent;
+            user = getUserResponse.result[0];
+            _context4.next = 21;
+            return _bcryptjs2.default.compare(loginRequest.password, login.password);
+
+          case 21:
             isMatch = _context4.sent;
 
             if (isMatch) {
               //Sign the Token
               payload = {
                 id: login._id,
+                userData: {
+                  id: user._id,
+                  name: user.name,
+                  lastname: user.lastname,
+                  avatar: user.avatar
+                },
                 email: login.email,
                 role: _constants.roles.member
               };
 
-
+              console.log(payload);
               _jsonwebtoken2.default.sign(payload, _keys.keys.authSecret, {
                 expiresIn: 3600,
                 audience: 'All',
@@ -411,7 +427,7 @@ router.post('/users', function () {
               });
             }
 
-          case 19:
+          case 23:
           case 'end':
             return _context4.stop();
         }

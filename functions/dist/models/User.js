@@ -36,6 +36,9 @@ var userSchema = new _VersionSchema2.default({
   gender: {
     type: String,
     required: true
+  },
+  avatar: {
+    type: String
   }
 });
 

@@ -25,23 +25,27 @@ var clinicSchema = new _VersionSchema2.default({
     type: String,
     required: true
   },
-  procedures: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'procedures' }],
-  feedbacks: [{ type: Object }],
+  description: {
+    type: String,
+    required: true
+  },
+  images: {
+    type: [String]
+  },
+  specialties: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'specialties' }],
   location: {
     type: _mongoose.Schema.Types.ObjectId,
     ref: 'places'
   },
-  address: {
-    type: String
+  doctors: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'doctors' }],
+  rates: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'clinicrates' }],
+  reviews: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'clinicreviews' }],
+  averageTime: {
+    hours: 'number',
+    minutes: 'number'
   },
-  telephone: {
-    type: String
-  },
-  description: {
-    type: String
-  },
-  imgs: {
-    type: [String]
+  averageCost: {
+    type: Number
   }
 });
 

@@ -163,7 +163,7 @@ router.post('/clinics/:clinicId/appointments', function () {
               userId: req.body.userId,
               clinicId: req.params.clinicId,
               userName: req.body.userName,
-              procedure: req.body.procedure,
+              specialty: req.body.specialty,
               date: req.body.date,
               time: req.body.time,
               status: 'Pending',

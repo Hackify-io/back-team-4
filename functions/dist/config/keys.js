@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'dev') {
   keysHolder = devKeys;
 } else {
-  keysHolder = devKeys;
+  keysHolder = localKeys;
 }
 var keys = exports.keys = keysHolder.default;
 //# sourceMappingURL=keys.js.map

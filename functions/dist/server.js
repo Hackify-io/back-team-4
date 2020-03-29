@@ -43,9 +43,9 @@ var _logins = require('./routes/logins');
 
 var _logins2 = _interopRequireDefault(_logins);
 
-var _procedures = require('./routes/procedures');
+var _specialties = require('./routes/specialties');
 
-var _procedures2 = _interopRequireDefault(_procedures);
+var _specialties2 = _interopRequireDefault(_specialties);
 
 var _places = require('./routes/places');
 
@@ -63,21 +63,23 @@ var _feedbacks = require('./routes/feedbacks');
 
 var _feedbacks2 = _interopRequireDefault(_feedbacks);
 
+var _doctors = require('./routes/doctors');
+
+var _doctors2 = _interopRequireDefault(_doctors);
+
 var _cors = require('cors');
 
 var _cors2 = _interopRequireDefault(_cors);
 
-var _proceduresSeedMethod = require('./helpers/proceduresSeedMethod');
-
-var _placesSeedMethod = require('./helpers/placesSeedMethod');
+var _dataSeeder = require('./helpers/dataSeeder');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //Services
-
+var app = (0, _express2.default)();
 
 //Routes
-var app = (0, _express2.default)();
+
 
 //data seed helper
 
@@ -111,17 +113,19 @@ require('./config/passport')(_passport2.default);
 app.use('/api/healthcheck', _healthcheck2.default);
 app.use('/api/users', _users2.default);
 app.use('/api/logins', _logins2.default);
-app.use('/api/procedures', _procedures2.default);
+app.use('/api/specialties', _specialties2.default);
 app.use('/api/places', _places2.default);
 app.use('/api/clinics', _clinics2.default);
+app.use('/api/doctors', _doctors2.default);
 app.use('/api', _appointments2.default);
 app.use('/api/clinics', _feedbacks2.default);
 
-// const port = process.env.PORT || 5000;
-// app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
+var port = process.env.PORT || 5000;
+app.listen(port, function () {
+  return console.log('Server running ' + process.env.NODE_ENV + ' environment on port ' + port);
+});
 
-(0, _proceduresSeedMethod.seedProcedures)();
-(0, _placesSeedMethod.seedPlaces)();
+(0, _dataSeeder.seedDb)();
 
 exports.default = app;
 //# sourceMappingURL=server.js.map

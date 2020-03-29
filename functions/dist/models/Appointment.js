@@ -29,9 +29,9 @@ var AppointmentSchema = new _VersionSchema2.default({
     ref: 'clinics',
     required: true
   },
-  procedure: {
+  specialty: {
     type: _mongoose.Schema.Types.ObjectId,
-    ref: 'procedures',
+    ref: 'specialties',
     required: true
   },
   date: {

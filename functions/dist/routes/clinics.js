@@ -1,22 +1,28 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _express = require('express');
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _express = require("express");
 
 var _express2 = _interopRequireDefault(_express);
 
-var _ApiResponse = require('../models/ApiResponse');
+var _ApiResponse = require("../models/ApiResponse");
 
 var _ApiResponse2 = _interopRequireDefault(_ApiResponse);
 
-var _Clinic = require('../models/Clinic');
+var _repository = require("./../services/repository");
+
+var _repository2 = _interopRequireDefault(_repository);
+
+var _Clinic = require("../models/Clinic");
 
 var _Clinic2 = _interopRequireDefault(_Clinic);
 
-var _clinic = require('../validations/clinic');
+var _clinic = require("../validations/clinic");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30,46 +36,32 @@ var router = (0, _express2.default)();
 // @route   GET api/clinics?{filters}
 // @desc    Get clinics using filter
 // @access  Public
-router.get('/', function () {
+router.get("/", function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
-    var response, _req$query, location, procedure, clinic;
+    var _req$query, location, specialty, filter, populate, response;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            response = new _ApiResponse2.default();
-            _req$query = req.query, location = _req$query.location, procedure = _req$query.procedure;
-            _context.prev = 2;
-            _context.next = 5;
-            return _Clinic2.default.find({
-              location: location,
-              procedures: procedure
-            }).populate('procedures').populate('location');
+            _req$query = req.query, location = _req$query.location, specialty = _req$query.specialty;
+            filter = _extends({}, specialty ? { specialty: specialty } : {}, location ? { location: location } : {});
+            populate = ['specialties', 'location', 'doctors', 'rates', 'reviews'];
+            1;
+            _context.next = 6;
+            return _repository2.default.getAll(_Clinic2.default, filter, populate);
 
-          case 5:
-            clinic = _context.sent;
-            _context.next = 8;
-            return response.Ok(clinic);
+          case 6:
+            response = _context.sent;
+
+            res.status(response.statusCode).json(response);
 
           case 8:
-            res.status(response.statusCode).json(response);
-            _context.next = 15;
-            break;
-
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context['catch'](2);
-
-            response.InternalServerError(_context.t0.message);
-            res.status(response.statusCode).json(response);
-
-          case 15:
-          case 'end':
+          case "end":
             return _context.stop();
         }
       }
-    }, _callee, undefined, [[2, 11]]);
+    }, _callee, undefined);
   }));
 
   return function (_x, _x2) {
@@ -80,7 +72,7 @@ router.get('/', function () {
 // @route   GET api/clinics/:id
 // @desc    Get clinics
 // @access  Private
-router.get('/:id', function () {
+router.get("/:id", function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res) {
     var response, clinic;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -90,7 +82,7 @@ router.get('/:id', function () {
             response = new _ApiResponse2.default();
             _context2.prev = 1;
             _context2.next = 4;
-            return _Clinic2.default.findById(req.params.id).populate('procedures').populate('location');
+            return _Clinic2.default.findById(req.params.id).populate("specialties").populate("location");
 
           case 4:
             clinic = _context2.sent;
@@ -104,7 +96,7 @@ router.get('/:id', function () {
             return response.NotFound();
 
           case 8:
-            return _context2.abrupt('return', res.status(response.statusCode).json(response));
+            return _context2.abrupt("return", res.status(response.statusCode).json(response));
 
           case 9:
             _context2.next = 11;
@@ -117,7 +109,7 @@ router.get('/:id', function () {
 
           case 14:
             _context2.prev = 14;
-            _context2.t0 = _context2['catch'](1);
+            _context2.t0 = _context2["catch"](1);
             _context2.next = 18;
             return response.InternalServerError(_context2.t0.message);
 
@@ -125,7 +117,7 @@ router.get('/:id', function () {
             res.status(response.statusCode).json(response);
 
           case 19:
-          case 'end':
+          case "end":
             return _context2.stop();
         }
       }
@@ -140,7 +132,7 @@ router.get('/:id', function () {
 // @route   POST api/clinics
 // @desc    Create clinics
 // @access  Private
-router.post('/', function () {
+router.post("/", function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, res) {
     var response, _validateClinicFields, errors, isValid, newClinic, postResponse;
 
@@ -162,7 +154,7 @@ router.post('/', function () {
             return response.ValidationError(errors);
 
           case 5:
-            return _context3.abrupt('return', res.status(response.statusCode).json(response));
+            return _context3.abrupt("return", res.status(response.statusCode).json(response));
 
           case 6:
             newClinic = new _Clinic2.default({
@@ -173,7 +165,7 @@ router.post('/', function () {
               address: req.body.address,
               feedback: [],
               telephone: req.body.telephone,
-              procedures: req.body.procedures,
+              specialties: req.body.specialties,
               description: req.body.description,
               imgs: req.body.imgs,
               createdDate: new Date()
@@ -194,7 +186,7 @@ router.post('/', function () {
 
           case 16:
             _context3.prev = 16;
-            _context3.t0 = _context3['catch'](7);
+            _context3.t0 = _context3["catch"](7);
             _context3.next = 20;
             return response.InternalServerError(_context3.t0.message);
 
@@ -202,7 +194,7 @@ router.post('/', function () {
             res.status(response.statusCode).json(response);
 
           case 21:
-          case 'end':
+          case "end":
             return _context3.stop();
         }
       }
@@ -217,7 +209,7 @@ router.post('/', function () {
 // @route   PUT api/clinics
 // @desc    Update clinics
 // @access  Private
-router.put('/:id', function () {
+router.put("/:id", function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(req, res) {
     var response, _validateClinicFields2, errors, isValid, clinic, updatedClinic, updateResponse, updatedModel;
 
@@ -239,7 +231,7 @@ router.put('/:id', function () {
             return response.ValidationError(errors);
 
           case 5:
-            return _context4.abrupt('return', res.status(response.statusCode).json(response));
+            return _context4.abrupt("return", res.status(response.statusCode).json(response));
 
           case 6:
 
@@ -261,7 +253,7 @@ router.put('/:id', function () {
             return response.NotFound();
 
           case 14:
-            return _context4.abrupt('return', res.status(response.statusCode).json(response));
+            return _context4.abrupt("return", res.status(response.statusCode).json(response));
 
           case 15:
             _context4.next = 22;
@@ -269,7 +261,7 @@ router.put('/:id', function () {
 
           case 17:
             _context4.prev = 17;
-            _context4.t0 = _context4['catch'](7);
+            _context4.t0 = _context4["catch"](7);
             _context4.next = 21;
             return response.InternalServerError(_context4.t0.message);
 
@@ -283,7 +275,7 @@ router.put('/:id', function () {
               address: req.body.address,
               feedback: req.body.feedback,
               telephone: req.body.telephone,
-              procedures: req.body.procedures,
+              specialties: req.body.specialties,
               description: req.body.description,
               imgs: req.body.imgs,
               modifiedUser: req.body.modifiedUser,
@@ -312,7 +304,7 @@ router.put('/:id', function () {
 
           case 35:
             _context4.prev = 35;
-            _context4.t1 = _context4['catch'](23);
+            _context4.t1 = _context4["catch"](23);
             _context4.next = 39;
             return response.InternalServerError(_context4.t1.message);
 
@@ -320,7 +312,7 @@ router.put('/:id', function () {
             res.status(response.statusCode).json(response);
 
           case 40:
-          case 'end':
+          case "end":
             return _context4.stop();
         }
       }
@@ -335,7 +327,7 @@ router.put('/:id', function () {
 // @route   DELETE api/clinics/:id
 // @desc    Delete clinic
 // @access  private
-router.delete('/:id', function () {
+router.delete("/:id", function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5(req, res) {
     var response, clinic;
     return regeneratorRuntime.wrap(function _callee5$(_context5) {
@@ -359,7 +351,7 @@ router.delete('/:id', function () {
             return response.NotFound();
 
           case 8:
-            return _context5.abrupt('return', res.status(response.statusCode).json(response));
+            return _context5.abrupt("return", res.status(response.statusCode).json(response));
 
           case 9:
             _context5.next = 11;
@@ -376,7 +368,7 @@ router.delete('/:id', function () {
 
           case 16:
             _context5.prev = 16;
-            _context5.t0 = _context5['catch'](1);
+            _context5.t0 = _context5["catch"](1);
 
             console.log(_context5.t0);
             _context5.next = 21;
@@ -386,7 +378,7 @@ router.delete('/:id', function () {
             res.status(response.statusCode).json(response);
 
           case 22:
-          case 'end':
+          case "end":
             return _context5.stop();
         }
       }
