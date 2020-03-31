@@ -17,6 +17,9 @@ const EventSchema = new VersionSchema({
   endDate: {
     type: Date,
     required: true
+  },
+  displayImage: {
+    type: String
   }
 });
 

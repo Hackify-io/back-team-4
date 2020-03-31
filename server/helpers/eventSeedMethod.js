@@ -6,25 +6,29 @@ export const seedEvents = async () => {
         title: "Brand new Event 1",
         description: "Something is going to get cool really soon",
         startDate: Date.now(),
-        endDate: new Date().setDate(new Date().getDate() + 3)
+        endDate: new Date().setDate(new Date().getDate() + 3),
+        displayImage: "https://khn.org/wp-content/uploads/sites/2/2017/05/medical-tests_7701.jpg?w=770"
     },
     {
         title: "Brand new Event 2",
         description: "Short Text",
         startDate: Date.now(),
-        endDate: new Date().setDate(new Date().getDate() + 3)
+        endDate: new Date().setDate(new Date().getDate() + 3),
+        displayImage: "https://khn.org/wp-content/uploads/sites/2/2017/05/medical-tests_7701.jpg?w=770"
     },
     {
         title: "Brand new Event 3",
         description: "Very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long text",
         startDate: Date.now(),
-        endDate: new Date().setDate(new Date().getDate() + 3)
+        endDate: new Date().setDate(new Date().getDate() + 3),
+        displayImage: "https://khn.org/wp-content/uploads/sites/2/2017/05/medical-tests_7701.jpg?w=770"
     },
     {
         title: "Brand new Event 4",
         description: "This is an event with a common description that will be useful to messure some of the common length",
         startDate: Date.now(),
-        endDate: new Date().setDate(new Date().getDate() + 3)
+        endDate: new Date().setDate(new Date().getDate() + 3),
+        displayImage: "https://khn.org/wp-content/uploads/sites/2/2017/05/medical-tests_7701.jpg?w=770"
     }
   ];
 
@@ -40,7 +44,8 @@ export const seedEvents = async () => {
         title: pl.title,
         description: pl.description,
         startDate: pl.startDate,
-        endDate: pl.endDate
+        endDate: pl.endDate,
+        displayImage: pl.displayImage
       });
 
       await event.save();
