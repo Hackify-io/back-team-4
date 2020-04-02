@@ -1,4 +1,4 @@
-import ApiResponse from '../models/ApiResponse';
+import ApiResponse from "../models/ApiResponse";
 
 export default class Repository {
   static async getAll(DataModel, filter = {}, populateFields = []) {
@@ -78,10 +78,7 @@ export default class Repository {
     if (validator) {
       let { errors, isValid } = validator(mergedModel);
       // Check Validation
-      if (!model['modifiedUser']) {
-        isValid = false;
-        errors.modifiedUser = 'modifiedUser is Required';
-      }
+
       if (!isValid) {
         // If any errors, send 400 with errors object
         response.ValidationError(errors);

@@ -1,5 +1,8 @@
-import validator from "validator";
-import { isEmpty, isRequired } from "./is-empty";
+import express from "express";
+
+const router = express();
+
+import Validator from "validator";
 
 export const validateClinicRateFields = data => {
   let errors = {};
