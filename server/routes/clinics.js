@@ -169,6 +169,8 @@ import ClinicRate from "../models/ClinicRate";
 router.post("/:clinicId/rates/", async (req, res) => {
   //Get Prerequirments: Clinic by ClinicId
 
+  let response = new ApiResponse();
+
   try {
     const { clinicId } = req.params;
     const populate = ["rates"];
@@ -203,16 +205,15 @@ router.post("/:clinicId/rates/", async (req, res) => {
     }
 
     const currentRate = createClinicRateResponse.result;
+    let currentRates = currentClinic.rates;
 
     //If everything goes well to this point we update clinic reference
 
     // console.log(currentRate);
 
-    let currentRates = currentClinic.rates;
-
     currentRates.push(currentRate._id);
 
-    console.log(currentRates);
+    // console.log(currentRates);
 
     //Updating this way is experimental so we can have an HTTP Response if it does not work use:
     //currentClinic.rates.push(currentRate._id)
@@ -226,45 +227,47 @@ router.post("/:clinicId/rates/", async (req, res) => {
     res.status(response.statusCode).json(response);
   }
 });
-
 // @route   DELETE api/clinics/:id/rates
 // @desc    DELETE rate from clinic
 // @access  Private
 router.delete("/:clinicId/rates/:rateId", async (req, res) => {
+  let response = new ApiResponse();
+
   //Get Prerequirments: Clinic by ClinicId
-  const { clinicId, rateId } = req.params;
-  const populate = ["rates"];
-  const getClinicResponse = await Repository.getById(
-    Clinic,
-    clinicId,
-    populate
-  );
+  try {
+    const { clinicId, rateId } = req.params;
+    const populate = ["rates"];
+    const getClinicResponse = await Repository.getById(
+      Clinic,
+      clinicId,
+      populate
+    );
 
-  //If there is no Clinic we return not found Clinic by the Repo
-  if (!getClinicResponse.isSuccess) {
-    return res.status(getClinicResponse.statusCode).json(getClinicResponse);
+    //If there is no Clinic we return not found Clinic by the Repo
+    if (!getClinicResponse) {
+      await response.NotFound();
+      return res.status(response.statusCode).json(response);
+    }
+
+    const currentClinic = getClinicResponse.result;
+    // console.log(currentClinic);
+    //If everything goes well to this point we update clinic reference
+
+    // const currentRates = currentClinic.rates.filter(r => r._id !== rateId); No logre que sirviera el filter siempre regresaba el mismo arreglo
+
+    currentClinic.rates.remove(rateId);
+
+    //Updating this way is experimental so we can have an HTTP Response if it does not work use:
+    //currentClinic.rates.push(currentRate._id)
+    //await currentClinic.save();
+    await currentClinic.save();
+    await response.Ok();
+    res.status(response.statusCode).json(response);
+  } catch (err) {
+    console.log(err);
+    await response.InternalServerError(err.message);
+    res.status(response.statusCode).json(response);
   }
-  const currentClinic = getClinicResponse.result;
-
-  console.log("qhe bergas?");
-
-  //If everything goes well to this point we update clinic reference
-
-  const currentRates = currentClinic.rates.filter(r => r._id == rateId);
-
-  console.log(currentClinic.rates);
-  console.log(currentRates);
-
-  //Updating this way is experimental so we can have an HTTP Response if it does not work use:
-  //currentClinic.rates.push(currentRate._id)
-  //await currentClinic.save();
-  const updateClinicResponse = await Repository.update(
-    Clinic,
-    currentClinic._id,
-    currentRates,
-    validateClinicFields
-  );
-  return res.status(updateClinicResponse.statusCode).json(updateClinicResponse);
 });
 
 export default router;
