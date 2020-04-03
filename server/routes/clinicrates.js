@@ -16,7 +16,7 @@ import ClinicRate from "../models/ClinicRate";
 // @access  Private
 router.post("/:clinicId/rates/", async (req, res) => {
   //Get Prerequirments: Clinic by ClinicId
-  const { clinicId } = this.params;
+  const { clinicId } = req.params;
   const populate = ["rates"];
   const getClinicResponse = await Repository.getById(
     Clinic,
@@ -31,13 +31,17 @@ router.post("/:clinicId/rates/", async (req, res) => {
   const currentClinic = getClinicResponse.result;
 
   //If Clinic Exist we create the Rate
+
+  const newClinicRate = { ...req.body, clinicId: clinicId };
+
   const createClinicRateResponse = await Repository.create(
     ClinicRate,
-    req.body,
+    newClinicRate,
     validateClinicRateFields
   );
+
   //If the Rate Couldnt Be created we return creation Error
-  if (!createClinicRateResponse.isSuccesss) {
+  if (!createClinicRateResponse.isSuccess) {
     return res
       .status(createClinicRateResponse.statusCode)
       .json(createClinicRateResponse);
@@ -46,31 +50,37 @@ router.post("/:clinicId/rates/", async (req, res) => {
 
   //If everything goes well to this point we update clinic reference
   let currentRates = currentClinic.rates;
-  currentRate.push(currentRate._id);
+  currentRates.push(currentRate._id);
   //Updating this way is experimental so we can have an HTTP Response if it does not work use:
   //currentClinic.rates.push(currentRate._id)
   //await currentClinic.save();
+
+  const updateClinic = {
+    rates: currentRates,
+    modifiedUser: req.body.modifiedUser
+  };
+
   const updateClinicResponse = await Repository.update(
     Clinic,
     currentClinic._id,
-    currentRates,
+    updateClinic,
     validateClinicFields
   );
-  return res.status(updateClinicResponse.statusCode).json(updateClinicResponse);
+
+  //console.log(updateClinicResponse);
+
+  return res
+    .status(createClinicRateResponse.statusCode)
+    .json(createClinicRateResponse);
 });
 
 // @route   DELETE api/clinics/:id/rates
 // @desc    DELETE rate from clinic
 // @access  Private
-router.delete("/:clinicId/rates/", async (req, res) => {
+router.delete("/:clinicId/rates/:rateId", async (req, res) => {
   //Get Prerequirments: Clinic by ClinicId
-  const { clinicId } = this.params;
-  const populate = ["rates"];
-  const getClinicResponse = await Repository.getById(
-    Clinic,
-    clinicId,
-    populate
-  );
+  const { clinicId, rateId } = req.params;
+  const getClinicResponse = await Repository.getById(Clinic, clinicId);
 
   //If there is no Clinic we return not found Clinic by the Repo
   if (!getClinicResponse.isSuccess) {
@@ -79,30 +89,46 @@ router.delete("/:clinicId/rates/", async (req, res) => {
   const currentClinic = getClinicResponse.result;
 
   //If Clinic Exist we create the Rate
-  const createClinicRateResponse = await Repository.create(
-    ClinicRate,
-    req.body,
-    validateClinicRateFields
-  );
-  //If the Rate Couldnt Be created we return creation Error
-  if (!createClinicRateResponse.isSuccesss) {
+
+  const getClinicRateResponse = await Repository.getById(ClinicRate, rateId);
+
+  if (getClinicRateResponse.isSuccess && getClinicRateResponse === null) {
     return res
-      .status(createClinicRateResponse.statusCode)
+      .status(getClinicRateResponse.statusCode)
       .json(createClinicRateResponse);
   }
-  const currentRate = createClinicRateResponse.result;
+
+  //If the Rate Couldnt Be created we return creation Error
+
+  const deleteClinicRateResponse = await Repository.remove(ClinicRate, rateId);
+
+  if (!deleteClinicRateResponse.isSuccess) {
+    return res
+      .status(deleteClinicRateResponse.statusCode)
+      .json(deleteClinicRateResponse);
+  }
 
   //If everything goes well to this point we update clinic reference
-  let currentRates = currentClinic.rates.filter(r => r._id == rates._id);
-  currentRates.push(currentRate._id);
+  const currentRates = currentClinic.rates.filter(r => r != rateId);
+
+  //console.log(currentRates);
+
   //Updating this way is experimental so we can have an HTTP Response if it does not work use:
   //currentClinic.rates.push(currentRate._id)
   //await currentClinic.save();
+
+  const updateClinic = {
+    rates: currentRates,
+    modifiedUser: req.body.modifiedUser
+  };
+
   const updateClinicResponse = await Repository.update(
     Clinic,
     currentClinic._id,
-    currentRates,
+    updateClinic,
     validateClinicFields
   );
-  return res.status(updateClinicResponse.statusCode).json(updateClinicResponse);
+
+  return res.status(204).json({});
 });
+export default router;
