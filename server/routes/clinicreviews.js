@@ -39,6 +39,7 @@ router.post("/:clinicId/reviews/", async (req, res) => {
     newClinicReview,
     validateClinicReviewFields
   );
+  
   //If the Review Couldnt Be created we return creation Error
   if (!createClinicReviewResponse.isSuccesss) {
     return res
@@ -46,7 +47,7 @@ router.post("/:clinicId/reviews/", async (req, res) => {
       .json(createClinicReviewResponse);
   }
   const currentReview = createClinicReviewResponse.result;
-
+  console.log(currentReview);
   //If everything goes well to this point we update clinic reference
   let currentReviews = currentClinic.reviews;
   currentReviews.push(currentReview._id);

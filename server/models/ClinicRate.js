@@ -3,17 +3,17 @@ import VersionSchema from "./VersionSchema";
 import { Schema } from "mongoose";
 //Create Schema
 const ClinicRateSchema = new VersionSchema({
-  clinicId: {
+  clinic: {
     type: Schema.Types.ObjectId,
     ref: "clinics",
     required: true
   },
-  rateTypeId: {
+  rateType: {
     type: Schema.Types.ObjectId,
     ref: "ratetypes",
     required: true
   },
-  userId: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "users",
     required: true

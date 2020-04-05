@@ -17,14 +17,16 @@ class VersionSchema {
         default: Date.now
       },
       createdUser: {
-        type: String
+        type: String,
+        required: true,
       },
       modifiedDate: {
         type: Date,
         default: Date.now
       },
       modifiedUser: {
-        type: String
+        type: String,
+        required: true,
       }
     });
     schema.add(params);

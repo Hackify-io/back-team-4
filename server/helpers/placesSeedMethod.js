@@ -1,6 +1,7 @@
 import Place from "../models/Place";
 
 export const seedPlaces = async () => {
+  const dataSeeder = "Data Seeder";
   const places = [
     {
       country: "Mexico",
@@ -37,7 +38,9 @@ export const seedPlaces = async () => {
         createdDate: new Date(),
         country: pl.country,
         state: pl.state,
-        city: pl.city
+        city: pl.city,
+        createdUser:dataSeeder,
+        modifiedUser:dataSeeder
       });
 
       await place.save();

@@ -1,6 +1,7 @@
 import RateType from "../models/RateType";
 
 export const seedRateTypes = async () => {
+  const dataSeeder = "Data Seeder";
   const rateTypes = [
     {
         name: "Service"
@@ -20,7 +21,8 @@ export const seedRateTypes = async () => {
     });
     if (!rateTypeExist) {
       const rateType = new RateType({
-        createdUser: "data seed",
+        createdUser:dataSeeder,
+        modifiedUser:dataSeeder,
         createdDate: new Date(),
         name: pl.name
       });

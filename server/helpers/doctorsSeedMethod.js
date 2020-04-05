@@ -1,6 +1,7 @@
 import Doctor from "../models/Doctor";
 
 export const seedDoctors = async () => {
+  const dataSeeder = "Data Seeder";
   const doctors = [
     {
       name: "David Shafe 1",
@@ -47,7 +48,8 @@ export const seedDoctors = async () => {
     });
     if (!doctorExist) {
       const doctor = new Doctor({
-        createdUser: "data seed",
+        createdUser:dataSeeder,
+        modifiedUser:dataSeeder,
         createdDate: new Date(),
         name: pl.name,
         degree: pl.degree,

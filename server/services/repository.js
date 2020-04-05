@@ -25,6 +25,10 @@ export default class Repository {
         promiseValues = promiseValues.populate(field);
       }
       let values = await promiseValues;
+      if(values === null){
+        response.NotFound(`Resource with id:" ${id}`);
+        return response;
+      }
       response.Ok(values);
       return response;
     } catch (err) {
@@ -44,7 +48,8 @@ export default class Repository {
         return response;
       }
     }
-    const newModel = new DataModel(model);
+    const createModel = {...model, modifiedUser:model.createdUser};
+    const newModel = new DataModel(createModel);
     try {
       let saveResponse = await newModel.save();
       response.Ok(saveResponse);
@@ -62,13 +67,12 @@ export default class Repository {
     let dbModelDoc;
     try {
       let getResponse = await this.getById(DataModel, id);
+      if (!getResponse.isSuccess) {
+        return getResponse;
+      }
       dbModel = getResponse.result;
       dbModelDoc = dbModel._doc;
       delete dbModelDoc.modifiedUser;
-      if (!dbModel) {
-        response.NotFound();
-        return response;
-      }
     } catch (err) {
       response.InternalServerError(err);
       return response;
@@ -110,11 +114,10 @@ export default class Repository {
     let response = new ApiResponse();
     try {
       let getResponse = await this.getById(DataModel, id);
-      let dbModel = getResponse.result;
-      if (!dbModel) {
-        response.NotFound();
-        return response;
+      if (!getResponse.isSuccess) {
+        return getResponse;
       }
+      let dbModel = getResponse.result;
       await dbModel.remove();
       response.NoContent();
       return response;
@@ -122,5 +125,27 @@ export default class Repository {
       response.InternalServerError(err);
       return response;
     }
+  }
+
+  static async validateUpdateRequest(request){
+    let response = new ApiResponse();
+    if(!request.modifiedUser){
+      response.ValidationError("modifiedUser");
+      response.setResponse({description:"Please provide a valid User"});
+      return response;
+    }
+    response.Ok();
+    return response;
+  }
+
+  static async validateCreateRequest(request){
+    let response = new ApiResponse();
+    if(!request.createdUser){
+      response.ValidationError("createdUser");
+      response.setResponse({description:"Please provide a valid User"});
+      return response;
+    }
+    response.Ok();
+    return response;
   }
 }

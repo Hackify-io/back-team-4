@@ -4,7 +4,7 @@ import RateType from '../models/RateType';
 import ClinicRate from '../models/ClinicRate';
 
 export const seedClinicRates = async () => {
-  
+  const dataSeeder = "DataSeeder";
   //Get One User
   const userFromRepo = await User.find({});
   const user = userFromRepo[0];
@@ -25,15 +25,17 @@ export const seedClinicRates = async () => {
     for (const cli of clinicFromRepo){
       //conditions to determine if a clinic is not considered to insert
       const clinicRateExist = await ClinicRate.findOne({
-        userId: user._id,
-        clinicId: cli._id
+        user: user._id,
+        clinic: cli._id
       });
       if (!clinicRateExist) {
         const clinicRate = new ClinicRate({
-            userId : user._id,
-            clinicId: cli._id,
-            rateTypeId: rateType._id,
-            value:pl.value
+            user : user._id,
+            clinic: cli._id,
+            rateType: rateType._id,
+            value:pl.value,
+            createdUser:dataSeeder,
+            modifiedUser:dataSeeder
         });
         const rateFromRepo = await clinicRate.save();
         cli.rates.push(rateFromRepo._id);

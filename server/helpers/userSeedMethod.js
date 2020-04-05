@@ -1,6 +1,7 @@
 import User from "../models/User";
 import Login from '../models/Login';
 export const seedUsers = async () => {
+  const dataSeeder = "Data Seeder";
   const users = [
     {
       email: "user@mtravel.com",
@@ -24,13 +25,15 @@ export const seedUsers = async () => {
             email: pl.email,
             password: pl.password,
             role: pl.role,
-            createdUser: "data seed",
+            createdUser:dataSeeder,
+            modifiedUser:dataSeeder,
             createdDate: new Date(),
         });
         const loginFromRepo = await login.save();
       const user = new User({
           loginId:loginFromRepo._id,
-          createdUser: "data seed",
+          createdUser:dataSeeder,
+          modifiedUser:dataSeeder,
           createdDate: new Date(),
           name: pl.name,
           lastname: pl.lastname,

@@ -32,7 +32,9 @@ router.get("/:id", async (req, res) => {
   try {
     let clinic = await Clinic.findById(req.params.id)
       .populate("specialties")
-      .populate("location");
+      .populate("location")
+      .populate("rates")
+      .populate("reviews");
     if (!clinic) {
       await response.NotFound();
       res.status(response.statusCode).json(response);
