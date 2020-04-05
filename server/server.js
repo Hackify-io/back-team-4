@@ -18,6 +18,8 @@ import clinics from './routes/clinics';
 import appointments from './routes/appointments';
 import feedbacks from './routes/feedbacks';
 import doctors from './routes/doctors';
+import events from './routes/events';
+import blogs from './routes/blogs';
 
 //Services
 const app = express();
@@ -61,6 +63,8 @@ app.use('/api/clinics', clinics);
 app.use('/api/doctors', doctors)
 app.use('/api', appointments);
 app.use('/api/clinics', feedbacks);
+app.use('/api/events', events);
+app.use('/api/blogs', blogs);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server running ${process.env.NODE_ENV} environment on port ${port}`));
