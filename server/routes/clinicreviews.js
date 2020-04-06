@@ -32,28 +32,30 @@ router.post("/:clinicId/reviews/", async (req, res) => {
 
   //If Clinic Exist we create the Review
 
-  const newClinicReview = { ...req.body, clinicId: clinicId };
+  const newClinicReview = { ...req.body, clinic: clinicId };
 
   const createClinicReviewResponse = await Repository.create(
     ClinicReview,
     newClinicReview,
     validateClinicReviewFields
   );
-  
+
   //If the Review Couldnt Be created we return creation Error
-  if (!createClinicReviewResponse.isSuccesss) {
+  if (createClinicReviewResponse.isSuccesss === false) {
     return res
       .status(createClinicReviewResponse.statusCode)
       .json(createClinicReviewResponse);
   }
   const currentReview = createClinicReviewResponse.result;
-  console.log(currentReview);
+
   //If everything goes well to this point we update clinic reference
   let currentReviews = currentClinic.reviews;
   currentReviews.push(currentReview._id);
   //Updating this way is experimental so we can have an HTTP Response if it does not work use:
   //currentClinic.reviews.push(currentReview._id)
   //await currentClinic.save();
+  console.log(currentReview);
+  console.log(currentReviews);
 
   const updateClinic = {
     reviews: currentReviews,

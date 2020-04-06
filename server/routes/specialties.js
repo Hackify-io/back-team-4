@@ -14,7 +14,18 @@ import { validateSpecialtyFields } from "../validations/specialty";
 // @access  Public
 router.get("/", async (req, res) => {
   let response = await Repository.getAll(Specialty);
-  res.status(response.statusCode).json(response);
+
+  const page = 1;
+  const limit = 2;
+
+  const StartIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  console.log(response);
+
+  const resultSpecialties = response.result.slice(StartIndex, endIndex);
+
+  res.status(response.statusCode).json(resultSpecialties);
 });
 
 // @route   GET api/specialties/:id

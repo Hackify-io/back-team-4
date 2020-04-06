@@ -1,4 +1,4 @@
-import ApiResponse from '../models/ApiResponse';
+import ApiResponse from "../models/ApiResponse";
 
 export default class Repository {
   static async getAll(DataModel, filter = {}, populateFields = []) {
@@ -25,7 +25,7 @@ export default class Repository {
         promiseValues = promiseValues.populate(field);
       }
       let values = await promiseValues;
-      if(values === null){
+      if (values === null) {
         response.NotFound(`Resource with id:" ${id}`);
         return response;
       }
@@ -48,7 +48,7 @@ export default class Repository {
         return response;
       }
     }
-    const createModel = {...model, modifiedUser:model.createdUser};
+    const createModel = { ...model, modifiedUser: model.createdUser };
     const newModel = new DataModel(createModel);
     try {
       let saveResponse = await newModel.save();
@@ -82,9 +82,9 @@ export default class Repository {
     if (validator) {
       let { errors, isValid } = validator(mergedModel);
       // Check Validation
-      if (!model['modifiedUser']) {
+      if (!model["modifiedUser"]) {
         isValid = false;
-        errors.modifiedUser = 'modifiedUser is Required';
+        errors.modifiedUser = "modifiedUser is Required";
       }
       if (!isValid) {
         // If any errors, send 400 with errors object
@@ -127,22 +127,22 @@ export default class Repository {
     }
   }
 
-  static async validateUpdateRequest(request){
+  static async validateUpdateRequest(request) {
     let response = new ApiResponse();
-    if(!request.modifiedUser){
+    if (!request.modifiedUser) {
       response.ValidationError("modifiedUser");
-      response.setResponse({description:"Please provide a valid User"});
+      response.setResponse({ description: "Please provide a valid User" });
       return response;
     }
     response.Ok();
     return response;
   }
 
-  static async validateCreateRequest(request){
+  static async validateCreateRequest(request) {
     let response = new ApiResponse();
-    if(!request.createdUser){
+    if (!request.createdUser) {
       response.ValidationError("createdUser");
-      response.setResponse({description:"Please provide a valid User"});
+      response.setResponse({ description: "Please provide a valid User" });
       return response;
     }
     response.Ok();

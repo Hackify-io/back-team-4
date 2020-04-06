@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose';
-import uuid from 'uuid';
+import { Schema } from "mongoose";
+import uuid from "uuid";
 
 const genuuid = uuid.v4;
 //Create Schema
@@ -10,11 +10,11 @@ class VersionSchema {
         type: String,
         required: true,
         default: genuuid(),
-        auto: true
+        auto: true,
       },
       createdDate: {
         type: Date,
-        default: Date.now
+        default: Date.now,
       },
       createdUser: {
         type: String,
@@ -22,12 +22,12 @@ class VersionSchema {
       },
       modifiedDate: {
         type: Date,
-        default: Date.now
+        default: Date.now,
       },
       modifiedUser: {
         type: String,
         required: true,
-      }
+      },
     });
     schema.add(params);
     return schema;
