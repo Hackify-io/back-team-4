@@ -7,28 +7,19 @@ import ApiResponse from "../models/ApiResponse";
 import Specialty from "../models/Specialty";
 import { validateSpecialtyFields } from "../validations/specialty";
 
-function paginatedResults(model) {
-  return async (req, res) => {
-    try {
-      const { page, perPage } = req.query;
-      const options = {
-        page: parseInt(page, 10) || 1,
-        limit: parseInt(perPage, 10) || 2,
-      };
-      const result = await model.paginate({}, options);
-      return res.json(result);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).send(err);
-    }
-  };
-}
-
 // @route   GET api/specialties
 // @desc    Get specialties
 // @access  Public
-router.get("/", paginatedResults(Specialty), (req, res) => {
-  res.json(res.paginatedResults);
+router.get("/", async (req, res) => {
+  const { page, perPage } = req.query;
+  const options = {
+    page: parseInt(page, 10) || 1,
+    limit: parseInt(perPage, 10) || 15,
+  };
+  let response = await Repository.getAll(Specialty, options);
+  console.log(response);
+
+  res.status(response.statusCode).json(response);
 });
 
 // @route   GET api/specialties/:id

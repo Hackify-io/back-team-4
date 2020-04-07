@@ -13,7 +13,12 @@ import { validateUserFields } from "../validations/user";
 // @desc    Get Users
 // @access  Public
 router.get("/", async (req, res) => {
-  let response = await Repository.getAll(User);
+  const { page, perPage } = req.query;
+  const options = {
+    page: parseInt(page, 10) || 1,
+    limit: parseInt(perPage, 10) || 15,
+  };
+  let response = await Repository.getAll(User, options);
   res.status(response.statusCode).json(response);
 });
 

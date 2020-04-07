@@ -1,14 +1,12 @@
 import ApiResponse from "../models/ApiResponse";
 
 export default class Repository {
-  static async getAll(DataModel, filter = {}, populateFields = []) {
+  static async getAll(DataModel, options) {
     let response = new ApiResponse();
     try {
-      let promiseValues = DataModel.find(filter);
-      for (const field of populateFields) {
-        promiseValues = promiseValues.populate(field);
-      }
+      let promiseValues = await DataModel.paginate({}, options);
       let values = await promiseValues;
+
       response.Ok(values);
       return response;
     } catch (err) {
