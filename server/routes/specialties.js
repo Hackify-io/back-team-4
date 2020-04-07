@@ -1,31 +1,34 @@
 import express from "express";
-
 const router = express();
 import Repository from "./../services/repository";
-
 import ApiResponse from "../models/ApiResponse";
 
 //import models
 import Specialty from "../models/Specialty";
 import { validateSpecialtyFields } from "../validations/specialty";
 
+function paginatedResults(model) {
+  return async (req, res) => {
+    try {
+      const { page, perPage } = req.query;
+      const options = {
+        page: parseInt(page, 10) || 1,
+        limit: parseInt(perPage, 10) || 2,
+      };
+      const result = await model.paginate({}, options);
+      return res.json(result);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send(err);
+    }
+  };
+}
+
 // @route   GET api/specialties
 // @desc    Get specialties
 // @access  Public
-router.get("/", async (req, res) => {
-  let response = await Repository.getAll(Specialty);
-
-  const page = 1;
-  const limit = 2;
-
-  const StartIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-
-  console.log(response);
-
-  const resultSpecialties = response.result.slice(StartIndex, endIndex);
-
-  res.status(response.statusCode).json(resultSpecialties);
+router.get("/", paginatedResults(Specialty), (req, res) => {
+  res.json(res.paginatedResults);
 });
 
 // @route   GET api/specialties/:id
