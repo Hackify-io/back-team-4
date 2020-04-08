@@ -14,12 +14,7 @@ import { validateDoctorFields } from "./../validations/doctor";
 // @desc    Get doctors
 // @access  Public
 router.get("/", async (req, res) => {
-  const { page, perPage } = req.query;
-  const options = {
-    page: parseInt(page, 10) || 1,
-    limit: parseInt(perPage, 10) || 15,
-  };
-  let response = await Repository.getAll(Doctor, options);
+  let response = await Repository.getAll(Doctor, req.query);
   res.status(response.statusCode).json(response);
 });
 

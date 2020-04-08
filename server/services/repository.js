@@ -1,10 +1,17 @@
 import ApiResponse from "../models/ApiResponse";
 
 export default class Repository {
-  static async getAll(DataModel, options) {
+  static async getAll(DataModel, query, populateFields = [], filter = {}) {
     let response = new ApiResponse();
+    const { page, perPage } = query;
+
+    const options = {
+      page: parseInt(page, 10) || 1,
+      limit: parseInt(perPage, 10) || 10,
+      populate: populateFields,
+    };
     try {
-      let promiseValues = await DataModel.paginate({}, options);
+      let promiseValues = await DataModel.paginate(filter, options);
       let values = await promiseValues;
 
       response.Ok(values);

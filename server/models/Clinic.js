@@ -1,41 +1,42 @@
-import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
-import VersionSchema from './VersionSchema';
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import { Schema } from "mongoose";
+import VersionSchema from "./VersionSchema";
 
 //create schema
 const clinicSchema = new VersionSchema({
   loginId: {
     type: Schema.Types.ObjectId,
-    ref: 'logins',
-    required: true
+    ref: "logins",
+    required: true,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   images: {
-    type: [String]
+    type: [String],
   },
-  specialties: [{ type: Schema.Types.ObjectId, ref: 'specialties' }],
+  specialties: [{ type: Schema.Types.ObjectId, ref: "specialties" }],
   location: {
     type: Schema.Types.ObjectId,
-    ref: 'places'
+    ref: "places",
   },
-  doctors: [{ type: Schema.Types.ObjectId, ref: 'doctors' }],
-  rates: [{type: Schema.Types.ObjectId, ref: 'clinicrates'}],
-  reviews: [{type: Schema.Types.ObjectId, ref: 'clinicreviews'}],
+  doctors: [{ type: Schema.Types.ObjectId, ref: "doctors" }],
+  rates: [{ type: Schema.Types.ObjectId, ref: "clinicrates" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "clinicreviews" }],
   averageTime: {
-    hours:'number',
-    minutes:'number'
+    hours: "number",
+    minutes: "number",
   },
   averageCost: {
-    type: Number
-  }
+    type: Number,
+  },
 });
-
-const Clinic = mongoose.model('clinics', clinicSchema);
+clinicSchema.plugin(mongoosePaginate);
+const Clinic = mongoose.model("clinics", clinicSchema);
 export default Clinic;

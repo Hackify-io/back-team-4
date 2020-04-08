@@ -15,12 +15,15 @@ import { validateClinicFields } from "../validations/clinic";
 router.get("/", async (req, res) => {
   const { location, specialty } = req.query;
   let filter = {
-    ...(specialty ? { specialty: specialty } : {}),
-    ...(location ? { location: location } : {})
+    ...(specialty ? { specialties: specialty } : {}),
+    ...(location ? { location: location } : {}),
   };
   let populate = ["specialties", "location", "doctors", "rates", "reviews"];
-  1;
-  let response = await Repository.getAll(Clinic, filter, populate);
+
+  let response = await Repository.getAll(Clinic, req.query, populate, filter);
+
+  //console.log(response);
+
   res.status(response.statusCode).json(response);
 });
 
@@ -74,7 +77,7 @@ router.post("/", async (req, res) => {
     specialties: req.body.specialties,
     description: req.body.description,
     imgs: req.body.imgs,
-    createdDate: new Date()
+    createdDate: new Date(),
   });
   try {
     const postResponse = await newClinic.save();
@@ -125,12 +128,12 @@ router.put("/:id", async (req, res) => {
     description: req.body.description,
     imgs: req.body.imgs,
     modifiedUser: req.body.modifiedUser,
-    modifiedDate: new Date()
+    modifiedDate: new Date(),
   };
 
   try {
     let updateResponse = await Clinic.findOneAndUpdate(req.params.id, {
-      $set: updatedClinic
+      $set: updatedClinic,
     });
     let updatedModel = await Clinic.findById(updateResponse._id);
     await response.Ok(updatedModel);
