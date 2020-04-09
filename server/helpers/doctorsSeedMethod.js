@@ -38,6 +38,87 @@ export const seedDoctors = async () => {
           years: 12,
           months: 0
         }
+      },
+      {
+        name: "David Shafe 5",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 6",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 7",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 8",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 9",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 10",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 11",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 12",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
+      },
+      {
+        name: "David Shafe 13",
+        degree: "Boared Certified Plastic Surgeon",
+        pictureUrl: "https://www.bbrfoundation.org/sites/default/files/images/people/shaffer-165.jpg",
+        expertiseTime: {
+          years: 12,
+          months: 0
+        }
       }
   ];
 
