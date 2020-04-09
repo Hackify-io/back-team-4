@@ -1,6 +1,7 @@
 import Event from "../models/Event";
 
 export const seedEvents = async () => {
+  const dataSeeder = "DataSeeder";
   const events = [
     {
         title: "Brand new Event 1",
@@ -45,7 +46,9 @@ export const seedEvents = async () => {
         description: pl.description,
         startDate: pl.startDate,
         endDate: pl.endDate,
-        displayImage: pl.displayImage
+        displayImage: pl.displayImage,
+        createdUser:dataSeeder,
+        modifiedUser:dataSeeder
       });
 
       await event.save();

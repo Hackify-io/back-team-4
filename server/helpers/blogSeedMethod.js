@@ -1,6 +1,7 @@
 import Blog from "../models/Blog";
 
 export const seedBlogs = async () => {
+  const dataSeeder = "DataSeeder";
   const blogs = [
     {
         title: "Brand new Blog 1",
@@ -45,7 +46,9 @@ export const seedBlogs = async () => {
         description: pl.description,
         startDate: pl.startDate,
         endDate: pl.endDate,
-        displayImage: pl.displayImage
+        displayImage: pl.displayImage,
+        createdUser:dataSeeder,
+        modifiedUser:dataSeeder
       });
 
       await blog.save();
