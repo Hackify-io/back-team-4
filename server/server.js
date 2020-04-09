@@ -20,6 +20,9 @@ import feedbacks from "./routes/feedbacks";
 import doctors from "./routes/doctors";
 import clinicrates from "./routes/clinicrates";
 import clinicreviews from "./routes/clinicreviews";
+import events from './routes/events';
+import blogs from './routes/blogs';
+
 
 //Services
 const app = express();
@@ -64,6 +67,8 @@ app.use("/api", appointments);
 app.use("/api/clinics", feedbacks);
 app.use("/api/clinics", clinicrates);
 app.use("/api/clinics", clinicreviews);
+app.use('/api/events', events);
+app.use('/api/blogs', blogs);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () =>
