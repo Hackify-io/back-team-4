@@ -20,9 +20,6 @@ router.get("/", async (req, res) => {
   };
   let populate = ["specialties", "location", "doctors", "rates", "reviews"];
   let response = await Repository.getAll(Clinic, filter, populate, req.query);
-
-  //console.log(response);
-
   res.status(response.statusCode).json(response);
 });
 
@@ -158,7 +155,6 @@ router.delete("/:id", async (req, res) => {
     await response.NoContent();
     res.status(response.statusCode).json(response);
   } catch (err) {
-    console.log(err);
     await response.InternalServerError(err.message);
     res.status(response.statusCode).json(response);
   }

@@ -12,7 +12,7 @@ import { validateBlogFields } from './../validations/blog';
 // @desc    Get blogs
 // @access  Public
 router.get('/', async (req, res) => {
-  let response = await Repository.getAll(Blog);
+  let response = await Repository.getAll(Blog, null, null, req.query);
   res.status(response.statusCode).json(response);
 });
 
