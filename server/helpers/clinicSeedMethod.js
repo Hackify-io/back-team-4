@@ -5,6 +5,7 @@ import Place from '../models/Place';
 import Doctor from '../models/Doctor';
 
 export const seedClinics = async () => {
+  const dataSeeder = "Data Seeder";
   const clinics = [
     {
       email: "clinic@mtravel.com",
@@ -108,8 +109,9 @@ export const seedClinics = async () => {
             email: pl.email,
             password: pl.password,
             role: pl.role,
-            createdClinic: "data seed",
             createdDate: new Date(),
+            createdUser:dataSeeder,
+            modifiedUser:dataSeeder
         });
         const loginFromRepo = await login.save();
         //Get All Specialties
@@ -126,7 +128,8 @@ export const seedClinics = async () => {
         
         const clinic = new Clinic({
           loginId:loginFromRepo._id,
-          createdClinic: "data seed",
+          createdUser:dataSeeder,
+          modifiedUser:dataSeeder,
           createdDate: new Date(),
           name: pl.name,
           description: pl.description,

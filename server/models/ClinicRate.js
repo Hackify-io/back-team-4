@@ -1,21 +1,21 @@
 import mongoose from "mongoose";
 import VersionSchema from "./VersionSchema";
-import { Schema } from 'mongoose';
+import { Schema } from "mongoose";
 //Create Schema
 const ClinicRateSchema = new VersionSchema({
-  clinicId: {
+  clinic: {
     type: Schema.Types.ObjectId,
-    ref: 'clinics',
+    ref: "clinics",
     required: true
   },
-  rateTypeId: {
+  rateType: {
     type: Schema.Types.ObjectId,
-    ref: 'ratetypes',
+    ref: "ratetypes",
     required: true
   },
-  userId: {
+  user: {
     type: Schema.Types.ObjectId,
-    ref: 'users',
+    ref: "users",
     required: true
   },
   value: {

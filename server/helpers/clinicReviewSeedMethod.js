@@ -3,7 +3,7 @@ import Clinic from "../models/Clinic";
 import ClinicReview from '../models/ClinicReview';
 
 export const seedClinicReviews = async () => {
-  
+  const dataSeeder = "Data Seeder";
   //Get One User
   const userFromRepo = await User.find({});
   const user = userFromRepo[0];
@@ -22,14 +22,16 @@ export const seedClinicReviews = async () => {
     for(const cli of clinicFromRepo){
       //conditions to determine if a clinic is not considered to insert
       const clinicReviewExist = await ClinicReview.findOne({
-        review: pl,
+        "review.message": pl.message,
         clinicId:cli._id
       });
       if (!clinicReviewExist) {
           const clinicReview = new ClinicReview({
               user : user._id,
               clinic: cli._id,
-              review:pl
+              review:pl,
+              createdUser:dataSeeder,
+              modifiedUser:dataSeeder
           });
           const reviewFromRepo = await clinicReview.save();
           cli.reviews.push(reviewFromRepo._id);

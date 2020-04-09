@@ -1,8 +1,6 @@
 import express from "express";
-
 const router = express();
 import Repository from "./../services/repository";
-
 import ApiResponse from "../models/ApiResponse";
 
 //import models
@@ -13,7 +11,9 @@ import { validateSpecialtyFields } from "../validations/specialty";
 // @desc    Get specialties
 // @access  Public
 router.get("/", async (req, res) => {
-  let response = await Repository.getAll(Specialty);
+  let response = await Repository.getAll(Specialty, req.query);
+  console.log(response);
+
   res.status(response.statusCode).json(response);
 });
 

@@ -1,6 +1,7 @@
 import Specialty from "../models/Specialty";
 
 export const seedSpecialties = async () => {
+  const dataSeeder = "Data Seeder";
   const specialties = [
     {
       name:"Plastic Surgery 1",
@@ -39,10 +40,11 @@ export const seedSpecialties = async () => {
     const specialtyExist = await Specialty.findOne({ name: proc.name });
     if (!specialtyExist) {
       const specialty = new Specialty({
-        createdUser: "data seed",
         createdDate: new Date(),
         name: proc.name,
-        imageUrl: proc.imageUrl
+        imageUrl: proc.imageUrl,
+        createdUser:dataSeeder,
+        modifiedUser:dataSeeder
       });
       await specialty.save();
     }

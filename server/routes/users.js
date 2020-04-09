@@ -13,7 +13,7 @@ import { validateUserFields } from "../validations/user";
 // @desc    Get Users
 // @access  Public
 router.get("/", async (req, res) => {
-  let response = await Repository.getAll(User);
+  let response = await Repository.getAll(User, req.query);
   res.status(response.statusCode).json(response);
 });
 
