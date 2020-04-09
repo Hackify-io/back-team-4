@@ -1,25 +1,26 @@
-import express from 'express';
-import Repository from './../services/repository';
+import express from "express";
+import Repository from "./../services/repository";
 const router = express();
 
 // Event model
-import Event from './../models/Event';
+import Event from "./../models/Event";
 
 //Validations on Event
-import { validateEventFields } from './../validations/event';
+import { validateEventFields } from "./../validations/event";
 
 // @route   GET api/events
 // @desc    Get events
 // @access  Public
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   let response = await Repository.getAll(Event, null, null, req.query);
+  console.log(response);
   res.status(response.statusCode).json(response);
 });
 
 // @route   GET api/events/:id
 // @desc    Get events by id
 // @access  Public
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const id = req.params.id;
   let response = await Repository.getById(Event, id);
   res.status(response.statusCode).json(response);
@@ -28,7 +29,7 @@ router.get('/:id', async (req, res) => {
 // @route   POST api/events
 // @desc    Create post
 // @access  Public
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   let response = await Repository.create(Event, req.body, validateEventFields);
   return res.status(response.statusCode).json(response);
 });
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
 // @route   PUT api/events/id
 // @desc    Update events
 // @access  Public
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   const id = req.params.id;
   let response = await Repository.update(
     Event,
@@ -50,7 +51,7 @@ router.put('/:id', async (req, res) => {
 // @route   DELETE api/event/:id
 // @desc    Delete event
 // @access  Public
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   let id = req.params.id;
   let response = await Repository.remove(Event, id);
   return res.status(response.statusCode).json(response);
