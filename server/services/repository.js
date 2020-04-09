@@ -1,19 +1,18 @@
 import ApiResponse from "../models/ApiResponse";
 
 export default class Repository {
-  static async getAll(DataModel, query, populateFields = [], filter = {}) {
+  static async getAll(DataModel, filter = {}, populateFields = [], paginationOptions = {}) {
     let response = new ApiResponse();
-    const { page, perPage } = query;
-
+    const { pageSize, pageNumber, paginate } = paginationOptions;
     const options = {
-      page: parseInt(page, 10) || 1,
-      limit: parseInt(perPage, 10) || 10,
-      populate: populateFields,
+      ...(pageNumber ? { page: pageNumber } : {}),
+      ...(pageSize ? { limit: pageSize } : {}),
+      ...(paginate ? { pagination: paginate ==='false' ? false: true } : {}),
+      ...(populateFields ? { populate: populateFields } : {})
     };
     try {
       let promiseValues = await DataModel.paginate(filter, options);
       let values = await promiseValues;
-
       response.Ok(values);
       return response;
     } catch (err) {

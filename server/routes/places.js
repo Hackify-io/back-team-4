@@ -12,7 +12,7 @@ import { validatePlaceFields } from "../validations/place";
 // @desc    Get places
 // @access  Public
 router.get("/", async (req, res) => {
-  let response = await Repository.getAll(Place, req.query);
+  let response = await Repository.getAll(Place, null, null, req.query);
   res.status(response.statusCode).json(response);
 });
 

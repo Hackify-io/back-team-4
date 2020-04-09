@@ -14,7 +14,7 @@ import { validateDoctorFields } from "./../validations/doctor";
 // @desc    Get doctors
 // @access  Public
 router.get("/", async (req, res) => {
-  let response = await Repository.getAll(Doctor, req.query);
+  let response = await Repository.getAll(Doctor, null, null, req.query);
   res.status(response.statusCode).json(response);
 });
 

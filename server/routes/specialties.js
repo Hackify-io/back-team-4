@@ -11,9 +11,7 @@ import { validateSpecialtyFields } from "../validations/specialty";
 // @desc    Get specialties
 // @access  Public
 router.get("/", async (req, res) => {
-  let response = await Repository.getAll(Specialty, req.query);
-  console.log(response);
-
+  let response = await Repository.getAll(Specialty, null, null, req.query);
   res.status(response.statusCode).json(response);
 });
 

@@ -12,7 +12,7 @@ import { validateEventFields } from './../validations/event';
 // @desc    Get events
 // @access  Public
 router.get('/', async (req, res) => {
-  let response = await Repository.getAll(Event);
+  let response = await Repository.getAll(Event, null, null, req.query);
   res.status(response.statusCode).json(response);
 });
 

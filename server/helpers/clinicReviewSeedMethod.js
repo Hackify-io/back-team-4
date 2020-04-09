@@ -10,7 +10,6 @@ export const seedClinicReviews = async () => {
 
   //Get One Clinic
   const clinicFromRepo = await Clinic.find({});
-  const clinic = await clinicFromRepo[0];
   const clinicReviews = [
     {
         username:`${user.name} ${user.lastname}`,
@@ -22,8 +21,8 @@ export const seedClinicReviews = async () => {
     for(const cli of clinicFromRepo){
       //conditions to determine if a clinic is not considered to insert
       const clinicReviewExist = await ClinicReview.findOne({
-        "review.message": pl.message,
-        clinicId:cli._id
+        review: pl,
+        clinic:cli._id
       });
       if (!clinicReviewExist) {
           const clinicReview = new ClinicReview({
