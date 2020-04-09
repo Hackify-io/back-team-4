@@ -15,6 +15,10 @@ import ClinicReview from "../models/ClinicReview";
 // @desc    Add review to clinic
 // @access  Private
 router.post("/:clinicId/reviews/", async (req, res) => {
+  const createRequest = await Repository.validateCreateRequest(req.body);
+  if (!createRequest.isSuccess) {
+    return res.status(createRequest.statusCode).json(createRequest);
+  }
   //Get Prerequirments: Clinic by ClinicId
   const { clinicId } = req.params;
   const populate = ["reviews"];
@@ -41,23 +45,20 @@ router.post("/:clinicId/reviews/", async (req, res) => {
   );
 
   //If the Review Couldnt Be created we return creation Error
-  if (createClinicReviewResponse.isSuccesss !== true) {
+  if (!createClinicReviewResponse.isSuccess) {
     return res
       .status(createClinicReviewResponse.statusCode)
       .json(createClinicReviewResponse);
   }
   const currentReview = createClinicReviewResponse.result;
-  console.log(currentReview);
+
   //If everything goes well to this point we update clinic reference
   let currentReviews = currentClinic.reviews;
   currentReviews.push(currentReview._id);
-  //Updating this way is experimental so we can have an HTTP Response if it does not work use:
-  //currentClinic.reviews.push(currentReview._id)
-  //await currentClinic.save();
 
   const updateClinic = {
     reviews: currentReviews,
-    modifiedUser: req.body.modifiedUser,
+    modifiedUser: req.body.createdUser,
   };
 
   const updateClinicResponse = await Repository.update(
@@ -66,6 +67,13 @@ router.post("/:clinicId/reviews/", async (req, res) => {
     updateClinic,
     validateClinicFields
   );
+
+  //If something wrong happend updating the clinicreview reference return it
+  if (!updateClinicResponse.isSuccess) {
+    return res
+      .status(updateClinicResponse.statusCode)
+      .json(updateClinicResponse);
+  }
 
   return res
     .status(createClinicReviewResponse.statusCode)
@@ -78,7 +86,6 @@ router.post("/:clinicId/reviews/", async (req, res) => {
 router.delete("/:clinicId/reviews/:reviewId", async (req, res) => {
   //Get Prerequirments: Clinic by ClinicId
   const { clinicId, reviewId } = req.params;
-
   const getClinicResponse = await Repository.getById(Clinic, clinicId);
 
   //If there is no Clinic we return not found Clinic by the Repo
@@ -107,23 +114,18 @@ router.delete("/:clinicId/reviews/:reviewId", async (req, res) => {
     reviewId
   );
 
-  if (!createClinicReviewResponse.isSuccesss) {
+  if (!deleteClinicReviewResponse.isSuccess) {
     return res
       .status(deleteClinicReviewResponse.statusCode)
       .json(deleteClinicReviewResponse);
   }
 
   //If everything goes well to this point we update clinic reference
-
   const currentReviews = currentClinic.reviews.filter((r) => r != reviewId);
-
-  //Updating this way is experimental so we can have an HTTP Response if it does not work use:
-  //currentClinic.reviews.push(currentReview._id)
-  //await currentClinic.save();
 
   const updateClinic = {
     reviews: currentReviews,
-    modifiedUser: req.body.modifiedUser,
+    modifiedUser: `Delete ClinicReview: ${reviewId}`,
   };
 
   const updateClinicResponse = await Repository.update(
@@ -133,6 +135,11 @@ router.delete("/:clinicId/reviews/:reviewId", async (req, res) => {
     validateClinicFields
   );
 
+  if (!updateClinicResponse.isSuccess) {
+    return res
+      .status(updateClinicResponse.statusCode)
+      .json(updateClinicResponse);
+  }
   return res.status(204).json({});
 });
 export default router;
