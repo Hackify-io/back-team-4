@@ -4,17 +4,17 @@ import mongoose from 'mongoose';
 const LoginSchema = new VersionSchema({
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   role: {
     type: String,
-    required: true
+    required: true,
   },
-  externalLogins: [{provider:'string', id: 'string'}]
+  externalLogins: [{ provider: 'string', id: 'string' }],
 });
 
 const Login = mongoose.model('logins', LoginSchema);

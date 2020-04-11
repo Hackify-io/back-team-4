@@ -6,30 +6,30 @@ const AppointmentSchema = new VersionSchema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'users',
-    required: true
+    required: true,
   },
   userName: {
-    type: String
+    type: String,
   },
   clinicId: {
     type: Schema.Types.ObjectId,
     ref: 'clinics',
-    required: true
+    required: true,
   },
   specialty: {
     type: Schema.Types.ObjectId,
     ref: 'specialties',
-    required: true
+    required: true,
   },
   date: {
-    type: Date
+    type: Date,
   },
   time: {
-    type: Number
+    type: Number,
   },
   status: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 const Appointment = mongoose.model('appointments', AppointmentSchema);

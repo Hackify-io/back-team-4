@@ -1,17 +1,17 @@
-import express from "express";
+import express from 'express';
 
 const router = express();
 
-import ApiResponse from "../models/ApiResponse";
+import ApiResponse from '../models/ApiResponse';
 
 //import models
-import Clinic from "../models/Clinic";
-import { validateFeedbackFields } from "../validations/feedback";
+import Clinic from '../models/Clinic';
+import { validateFeedbackFields } from '../validations/feedback';
 
 // @route   POST api/clinics/:id/feedback
 // @desc    Add feedback to clinic
 // @access  Private
-router.post("/:clinicId/feedbacks/", async (req, res) => {
+router.post('/:clinicId/feedbacks/', async (req, res) => {
   //Get Prerequirments: Clinic by ClinicId
   let getClinicResponse = {};
   //If Clinic is null
@@ -28,7 +28,7 @@ router.post("/:clinicId/feedbacks/", async (req, res) => {
 // @route   POST api/clinics/:id/feedback
 // @desc    Remove feedback from clinics
 // @access  Private
-router.delete("/:clinicId/feedbacks/remove", async (req, res) => {
+router.delete('/:clinicId/feedbacks/remove', async (req, res) => {
   let response = new ApiResponse();
   const { errors, isValid } = validateFeedbackFields(req.body);
 

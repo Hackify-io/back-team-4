@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import mongoosePaginate from "mongoose-paginate-v2";
-import VersionSchema from "./VersionSchema";
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
+import VersionSchema from './VersionSchema';
 //Create Schema
 const DoctorSchema = new VersionSchema({
   name: {
@@ -16,10 +16,10 @@ const DoctorSchema = new VersionSchema({
     required: true,
   },
   expertiseTime: {
-    years: "number",
-    months: "number",
+    years: 'number',
+    months: 'number',
   },
 });
 DoctorSchema.plugin(mongoosePaginate);
-const Doctor = mongoose.model("doctors", DoctorSchema);
+const Doctor = mongoose.model('doctors', DoctorSchema);
 export default Doctor;

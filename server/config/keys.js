@@ -10,6 +10,6 @@ if (process.env.NODE_ENV === 'production') {
 } else if (process.env.NODE_ENV === 'dev') {
   keysHolder = devKeys;
 } else {
-    keysHolder = localKeys;
+  keysHolder = localKeys;
 }
 export const keys = keysHolder.default;

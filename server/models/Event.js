@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import mongoosePaginate from "mongoose-paginate-v2";
-import VersionSchema from "./VersionSchema";
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
+import VersionSchema from './VersionSchema';
 //Create Schema
 const EventSchema = new VersionSchema({
   title: {
@@ -24,5 +24,5 @@ const EventSchema = new VersionSchema({
   },
 });
 EventSchema.plugin(mongoosePaginate);
-const Event = mongoose.model("events", EventSchema);
+const Event = mongoose.model('events', EventSchema);
 export default Event;

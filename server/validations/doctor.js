@@ -1,7 +1,7 @@
-import validator from "validator";
-import { isEmpty, isRequired } from "./is-empty";
+import validator from 'validator';
+import { isEmpty, isRequired } from './is-empty';
 
-export const validateDoctorFields = data => {
+export const validateDoctorFields = (data) => {
   let errors = {};
 
   data.country = isRequired(data.country);
@@ -9,17 +9,17 @@ export const validateDoctorFields = data => {
   data.pictureUrl = isRequired(data.pictureUrl);
 
   if (validator.isEmpty(data.name)) {
-    errors.name = "Name field is required";
+    errors.name = 'Name field is required';
   }
   if (validator.isEmpty(data.degree)) {
-    errors.degree = "Degree field is required";
+    errors.degree = 'Degree field is required';
   }
   if (validator.isEmpty(data.pictureUrl)) {
-    errors.pictureUrl = "Picture Url field is required";
+    errors.pictureUrl = 'Picture Url field is required';
   }
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

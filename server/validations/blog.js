@@ -1,21 +1,21 @@
-import validator from "validator";
-import { isEmpty, isRequired } from "./is-empty";
+import validator from 'validator';
+import { isEmpty, isRequired } from './is-empty';
 
-export const validateBlogFields = data => {
+export const validateBlogFields = (data) => {
   let errors = {};
 
   data.title = isRequired(data.country);
   data.description = isRequired(data.degree);
 
   if (validator.isEmpty(data.title)) {
-    errors.title = "Title field is required";
+    errors.title = 'Title field is required';
   }
   if (validator.isEmpty(data.description)) {
-    errors.description = "Description field is required";
+    errors.description = 'Description field is required';
   }
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

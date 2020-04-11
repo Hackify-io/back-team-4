@@ -67,7 +67,7 @@ router.post('/clinics/:clinicId/appointments', async (req, res) => {
     time: req.body.time,
     status: 'Pending',
     createdUser: req.body.createdUser,
-    createdDate: new Date()
+    createdDate: new Date(),
   });
   //TODO.JGuerrero:Check if user and clinic exists before creating the appointment
   try {

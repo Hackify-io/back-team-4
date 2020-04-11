@@ -1,4 +1,4 @@
-import { isEmpty, isRequired } from "../validations/is-empty";
+import { isEmpty, isRequired } from '../validations/is-empty';
 
 class ApiResponse {
   constructor(props) {
@@ -29,35 +29,35 @@ class ApiResponse {
   async Ok(result) {
     this.setResponse({
       statusCode: 200,
-      description: "Success",
+      description: 'Success',
       isSuccess: true,
-      result
+      result,
     });
   }
 
   async NoContent() {
     this.setResponse({
       statusCode: 204,
-      description: "Success",
-      isSuccess: true
+      description: 'Success',
+      isSuccess: true,
     });
   }
 
   async NotFound(err) {
     this.setResponse({
       statusCode: 404,
-      errorMessage: "NO_RESOURCES",
+      errorMessage: 'NO_RESOURCES',
       isSuccess: false,
-      description: err
+      description: err,
     });
   }
 
   async InternalServerError(err) {
     this.setResponse({
       statusCode: 500,
-      errorMessage: "INTERNAL_SERVER_ERROR",
+      errorMessage: 'INTERNAL_SERVER_ERROR',
       isSuccess: false,
-      description: err
+      description: err,
     });
   }
 
@@ -65,14 +65,14 @@ class ApiResponse {
     this.setResponse({
       statusCode: 422,
       fields: errors,
-      errorMessage: "VALIDATION_ERROR",
-      isSuccess: false
+      errorMessage: 'VALIDATION_ERROR',
+      isSuccess: false,
     });
   }
 
   async InvalidUrlParameter(urlParameterName) {
     const errors = new Object();
-    errors[urlParameterName] = "Invalid Url Parameter";
+    errors[urlParameterName] = 'Invalid Url Parameter';
     await ValidationError(errors);
   }
 }

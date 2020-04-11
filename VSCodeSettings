@@ -1,0 +1,7 @@
+Go to File => Preferences => Settings => In the Tabs there will be a File with Arrow Icon that Open Json Settings, add the following rules
+
+{
+  "editor.formatOnSave": true,
+  "javascript.format.enable": false,
+  "prettier.singleQuote": true
+}

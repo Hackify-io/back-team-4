@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import mongoosePaginate from "mongoose-paginate-v2";
-import VersionSchema from "./VersionSchema";
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
+import VersionSchema from './VersionSchema';
 //Create Schema
 const FooSchema = new VersionSchema({
   key: {
@@ -16,5 +16,5 @@ const FooSchema = new VersionSchema({
   },
 });
 FooSchema.plugin(mongoosePaginate);
-const Foo = mongoose.model("foos", FooSchema);
+const Foo = mongoose.model('foos', FooSchema);
 export default Foo;

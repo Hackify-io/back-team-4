@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
-import VersionSchema from "./VersionSchema";
+import mongoose from 'mongoose';
+import VersionSchema from './VersionSchema';
 //Create Schema
 const RateSchema = new VersionSchema({
   name: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
-const Rate = mongoose.model("ratetypes", RateSchema);
+const Rate = mongoose.model('ratetypes', RateSchema);
 export default Rate;

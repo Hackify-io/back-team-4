@@ -1,14 +1,19 @@
-import ApiResponse from "../models/ApiResponse";
+import ApiResponse from '../models/ApiResponse';
 
 export default class Repository {
-  static async getAll(DataModel, filter = {}, populateFields = [], paginationOptions = {}) {
+  static async getAll(
+    DataModel,
+    filter = {},
+    populateFields = [],
+    paginationOptions = {}
+  ) {
     let response = new ApiResponse();
     const { pageSize, pageNumber, paginate } = paginationOptions;
     const options = {
       ...(pageNumber ? { page: pageNumber } : {}),
       ...(pageSize ? { limit: pageSize } : {}),
-      ...(paginate ? { pagination: paginate ==='false' ? false: true } : {}),
-      ...(populateFields ? { populate: populateFields } : {})
+      ...(paginate ? { pagination: paginate === 'false' ? false : true } : {}),
+      ...(populateFields ? { populate: populateFields } : {}),
     };
     try {
       let promiseValues = await DataModel.paginate(filter, options);
@@ -86,9 +91,9 @@ export default class Repository {
     if (validator) {
       let { errors, isValid } = validator(mergedModel);
       // Check Validation
-      if (!model["modifiedUser"]) {
+      if (!model['modifiedUser']) {
         isValid = false;
-        errors.modifiedUser = "modifiedUser is Required";
+        errors.modifiedUser = 'modifiedUser is Required';
       }
       if (!isValid) {
         // If any errors, send 400 with errors object
@@ -134,8 +139,8 @@ export default class Repository {
   static async validateUpdateRequest(request) {
     let response = new ApiResponse();
     if (!request.modifiedUser) {
-      response.ValidationError("modifiedUser");
-      response.setResponse({ description: "Please provide a valid User" });
+      response.ValidationError('modifiedUser');
+      response.setResponse({ description: 'Please provide a valid User' });
       return response;
     }
     response.Ok();
@@ -145,8 +150,8 @@ export default class Repository {
   static async validateCreateRequest(request) {
     let response = new ApiResponse();
     if (!request.createdUser) {
-      response.ValidationError("createdUser");
-      response.setResponse({ description: "Please provide a valid User" });
+      response.ValidationError('createdUser');
+      response.setResponse({ description: 'Please provide a valid User' });
       return response;
     }
     response.Ok();
