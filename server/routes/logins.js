@@ -2,6 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { keys } from '../config/keys';
+import Repository from './../services/repository'
 import passport from 'passport';
 const router = express.Router();
 
@@ -12,8 +13,10 @@ import {
   validateLoginFields,
   validateRegisterFields
 } from '../validations/login';
+
 //Load Models
 import Login from '../models/Login';
+import User from '../models/User';
 import Clinic from '../models/Clinic';
 import ApiResponse from '../models/ApiResponse';
 
@@ -25,21 +28,26 @@ import { roles } from '../constants/constants';
 // @access  Public
 router.post('/clinics/register', async (req, res) => {
   let response = new ApiResponse();
+
   const { errors, isValid } = validateRegisterFields(req.body);
+
   // Check Validation
   if (!isValid) {
     // If any errors, send 400 with errors object
     await response.ValidationError(errors);
+
     return res.status(response.statusCode).json(response);
   }
 
   const register = req.body;
 
-  let getLoginRequest = await Login.findOne({ email: register.email });
+  let getLoginResponse = await Repository.getAll(Login, { email: register.email, role: roles.clinic  });
+
   //clinic login already exists
-  if (getLoginRequest) {
+  if (getLoginResponse.isSuccess && getLoginResponse.result) {
+    //Temporal declaration
     let errors = {};
-    errors.email = `Email ${getLoginRequest.email} is already registered`;
+    errors.email = `Email ${getLoginResponse.email} is already registered`;
     await response.ValidationError(errors);
     return res.status(response.statusCode).json(response);
   }
@@ -60,10 +68,9 @@ router.post('/clinics/register', async (req, res) => {
     bcrypt.hash(newLogin.password, salt, (err, hash) => {
       if (err) throw err;
       newLogin.password = hash;
-      newLogin.save().then(login => {
-        response.Ok(login).then(() => {
-          return res.status(response.statusCode).json(response);
-        });
+      Repository.create(Login,newLogin, validateLoginFields)
+      .then(createLoginResponse => {
+        return res.status(createLoginResponse.statusCode).json(createLoginResponse);
       });
     });
   });
@@ -74,7 +81,8 @@ router.post('/clinics/register', async (req, res) => {
 // @access  Public
 router.post('/users/register', async (req, res) => {
   let response = new ApiResponse();
-  const { errors, isValid } = validateRegisterFields(req.body);
+
+  const { errors, isValid } = validateLoginFields(req.body);
 
   // Check Validation
   if (!isValid) {
@@ -83,14 +91,16 @@ router.post('/users/register', async (req, res) => {
 
     return res.status(response.statusCode).json(response);
   }
+
   const register = req.body;
 
-  let getLoginRequest = await Login.findOne({ email: register.email });
-  //clinic login already exists
-  if (getLoginRequest) {
+  let getLoginResponse = await Repository.getAll(Login, { email: register.email, role: roles.member });
+
+  //user login already exists
+  if (getLoginResponse.isSuccess && getLoginResponse.result) {
     //Temporal declaration
     let errors = {};
-    errors.email = `Email ${getLoginRequest.email} is already registered`;
+    errors.email = `Email ${getLoginResponse.email} is already registered`;
     await response.ValidationError(errors);
     return res.status(response.statusCode).json(response);
   }
@@ -111,10 +121,9 @@ router.post('/users/register', async (req, res) => {
     bcrypt.hash(newLogin.password, salt, (err, hash) => {
       if (err) throw err;
       newLogin.password = hash;
-      newLogin.save().then(login => {
-        response.Ok(login).then(() => {
-          return res.status(response.statusCode).json(response);
-        });
+      Repository.create(Login,newLogin, validateLoginFields)
+      .then(createLoginResponse => {
+        return res.status(createLoginResponse.statusCode).json(createLoginResponse);
       });
     });
   });
@@ -134,30 +143,31 @@ router.post('/clinics', async (req, res) => {
 
     return res.status(response.statusCode).json(response);
   }
+
   const loginRequest = req.body;
 
-  //Look if Login exists
-  let getLoginResponse = await Login.findOne({
-    email: loginRequest.email,
-    role: roles.clinic
-  });
-  if (!getLoginResponse) {
-    await response.NotFound();
-    return res.status(response.statusCode).json(response);
+  let getLoginResponse = await Repository.getAll(Login, { email: loginRequest.email, role: roles.clinic });
+
+  //Check if Login Exists
+  if (getLoginResponse.isSuccess && !getLoginResponse.result) {
+    await getLoginResponse.NotFound();
+    return res.status(getLoginResponse.statusCode).json(getLoginResponse);
   }
 
   //If login exist encrypt password and validate model
-  const login = getLoginResponse;
-  const clinic = await Clinic.findOne({ loginId: login._id });
+  const login = getLoginResponse.result[0];
+  const getClinicResponse = await Repository.getAll(Clinic, { loginId: login._id });
+  const clinic = getClinicResponse.result;
   const isMatch = await bcrypt.compare(loginRequest.password, login.password);
   if (isMatch) {
     //Sign the Token
     const payload = {
       id: login._id,
-      clinicId: clinic ? clinic._id : null,
+      clinicId: clinic ? clinic[0]._id : null,
       email: login.email,
       role: roles.clinic
     };
+    console.log(payload);
     jwt.sign(
       payload,
       keys.authSecret,
@@ -192,29 +202,35 @@ router.post('/users', async (req, res) => {
 
     return res.status(response.statusCode).json(response);
   }
+  
   const loginRequest = req.body;
 
-  //Look if Login exists
-  let getLoginResponse = await Login.findOne({
-    email: loginRequest.email,
-    role: roles.member
-  });
-  if (!getLoginResponse) {
-    await response.NotFound();
-    return res.status(response.statusCode).json(response);
+  let getLoginResponse = await Repository.getAll(Login, { email: loginRequest.email, role: roles.member });
+  //Check if Login Exists
+  if (getLoginResponse.isSuccess && !getLoginResponse.result) {
+    await getLoginResponse.NotFound();
+    return res.status(getLoginResponse.statusCode).json(getLoginResponse);
   }
 
   //If login exist encrypt password and validate model
-  const login = getLoginResponse;
+  const login = getLoginResponse.result[0];
+  const getUserResponse = await Repository.getAll(User, { loginId: login._id });
+  const user = getUserResponse.result[0];
   const isMatch = await bcrypt.compare(loginRequest.password, login.password);
   if (isMatch) {
     //Sign the Token
     const payload = {
       id: login._id,
+      userData:{
+        id: user._id,
+        name: user.name,
+        lastname: user.lastname,
+        avatar: user.avatar
+      },
       email: login.email,
       role: roles.member
     };
-
+    console.log(payload);
     jwt.sign(
       payload,
       keys.authSecret,

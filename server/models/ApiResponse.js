@@ -43,11 +43,12 @@ class ApiResponse {
     });
   }
 
-  async NotFound() {
+  async NotFound(err) {
     this.setResponse({
       statusCode: 404,
       errorMessage: "NO_RESOURCES",
-      isSuccess: false
+      isSuccess: false,
+      description: err
     });
   }
 

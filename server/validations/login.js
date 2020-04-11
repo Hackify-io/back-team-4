@@ -31,6 +31,10 @@ export const validateRegisterFields = data => {
     errors.email = "Email field is required";
   }
 
+  if (!validator.isEmail(data.email)) {
+    errors.email = "Email field is incorrectly formated";
+  }
+  
   if (validator.isEmpty(data.password)) {
     errors.password = "Password field is required";
   }

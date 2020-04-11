@@ -1,31 +1,38 @@
-import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
-import VersionSchema from './VersionSchema';
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+
+import { Schema } from "mongoose";
+import VersionSchema from "./VersionSchema";
+import { plugin } from "mongoose";
 
 //create schema
 const userSchema = new VersionSchema({
   loginId: {
     type: Schema.Types.ObjectId,
-    ref: 'logins',
-    required: true
+    ref: "logins",
+    required: true,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
   lastname: {
     type: String,
-    required: true
+    required: true,
   },
   age: {
     type: Number,
-    required: true
+    required: true,
   },
   gender: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
+  avatar: {
+    type: String,
+  },
 });
 
-const User = mongoose.model('users', userSchema);
+userSchema.plugin(mongoosePaginate);
+const User = mongoose.model("users", userSchema);
 export default User;

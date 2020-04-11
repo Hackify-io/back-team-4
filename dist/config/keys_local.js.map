@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../server/config/keys_local.js"],"names":["keys","mongoURI","authSecret"],"mappings":";;;;;AAAA,IAAMA,OAAO;AACTC,cAAU,yCADD;AAETC,gBAAY;AAFH,CAAb;;kBAKeF,I","file":"keys_local.js","sourcesContent":["const keys = {\r\n    mongoURI: 'mongodb://localhost:27017/medicaltravel',\r\n    authSecret: 'medtravelSecret'\r\n};\r\n  \r\nexport default keys;"]}
