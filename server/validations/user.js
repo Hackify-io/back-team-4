@@ -1,7 +1,7 @@
 import validator from 'validator';
 import { isEmpty, isRequired } from './is-empty';
 
-export const validateUserFields = data => {
+export const validateUserFields = (data) => {
   let errors = {};
 
   data.name = isRequired(data.name);
@@ -27,6 +27,6 @@ export const validateUserFields = data => {
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

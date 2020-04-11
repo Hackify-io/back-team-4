@@ -1,5 +1,5 @@
-import { Schema } from "mongoose";
-import uuid from "uuid";
+import { Schema } from 'mongoose';
+import uuid from 'uuid';
 
 const genuuid = uuid.v4;
 //Create Schema

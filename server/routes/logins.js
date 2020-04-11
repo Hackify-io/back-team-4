@@ -2,7 +2,7 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { keys } from '../config/keys';
-import Repository from './../services/repository'
+import Repository from './../services/repository';
 import passport from 'passport';
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const router = express.Router();
 //validate register inputs
 import {
   validateLoginFields,
-  validateRegisterFields
+  validateRegisterFields,
 } from '../validations/login';
 
 //Load Models
@@ -41,7 +41,10 @@ router.post('/clinics/register', async (req, res) => {
 
   const register = req.body;
 
-  let getLoginResponse = await Repository.getAll(Login, { email: register.email, role: roles.clinic  });
+  let getLoginResponse = await Repository.getAll(Login, {
+    email: register.email,
+    role: roles.clinic,
+  });
 
   //clinic login already exists
   if (getLoginResponse.isSuccess && getLoginResponse.result) {
@@ -55,7 +58,7 @@ router.post('/clinics/register', async (req, res) => {
   let newLogin = new Login({
     email: register.email,
     password: register.password,
-    role: roles.clinic
+    role: roles.clinic,
   });
 
   bcrypt.genSalt(10, (err, salt) => {
@@ -68,10 +71,13 @@ router.post('/clinics/register', async (req, res) => {
     bcrypt.hash(newLogin.password, salt, (err, hash) => {
       if (err) throw err;
       newLogin.password = hash;
-      Repository.create(Login,newLogin, validateLoginFields)
-      .then(createLoginResponse => {
-        return res.status(createLoginResponse.statusCode).json(createLoginResponse);
-      });
+      Repository.create(Login, newLogin, validateLoginFields).then(
+        (createLoginResponse) => {
+          return res
+            .status(createLoginResponse.statusCode)
+            .json(createLoginResponse);
+        }
+      );
     });
   });
 });
@@ -94,7 +100,10 @@ router.post('/users/register', async (req, res) => {
 
   const register = req.body;
 
-  let getLoginResponse = await Repository.getAll(Login, { email: register.email, role: roles.member });
+  let getLoginResponse = await Repository.getAll(Login, {
+    email: register.email,
+    role: roles.member,
+  });
 
   //user login already exists
   if (getLoginResponse.isSuccess && getLoginResponse.result) {
@@ -108,7 +117,7 @@ router.post('/users/register', async (req, res) => {
   let newLogin = new Login({
     email: register.email,
     password: register.password,
-    role: roles.member
+    role: roles.member,
   });
 
   bcrypt.genSalt(10, (err, salt) => {
@@ -121,10 +130,13 @@ router.post('/users/register', async (req, res) => {
     bcrypt.hash(newLogin.password, salt, (err, hash) => {
       if (err) throw err;
       newLogin.password = hash;
-      Repository.create(Login,newLogin, validateLoginFields)
-      .then(createLoginResponse => {
-        return res.status(createLoginResponse.statusCode).json(createLoginResponse);
-      });
+      Repository.create(Login, newLogin, validateLoginFields).then(
+        (createLoginResponse) => {
+          return res
+            .status(createLoginResponse.statusCode)
+            .json(createLoginResponse);
+        }
+      );
     });
   });
 });
@@ -146,7 +158,10 @@ router.post('/clinics', async (req, res) => {
 
   const loginRequest = req.body;
 
-  let getLoginResponse = await Repository.getAll(Login, { email: loginRequest.email, role: roles.clinic });
+  let getLoginResponse = await Repository.getAll(Login, {
+    email: loginRequest.email,
+    role: roles.clinic,
+  });
 
   //Check if Login Exists
   if (getLoginResponse.isSuccess && !getLoginResponse.result) {
@@ -156,7 +171,9 @@ router.post('/clinics', async (req, res) => {
 
   //If login exist encrypt password and validate model
   const login = getLoginResponse.result[0];
-  const getClinicResponse = await Repository.getAll(Clinic, { loginId: login._id });
+  const getClinicResponse = await Repository.getAll(Clinic, {
+    loginId: login._id,
+  });
   const clinic = getClinicResponse.result;
   const isMatch = await bcrypt.compare(loginRequest.password, login.password);
   if (isMatch) {
@@ -165,16 +182,15 @@ router.post('/clinics', async (req, res) => {
       id: login._id,
       clinicId: clinic ? clinic[0]._id : null,
       email: login.email,
-      role: roles.clinic
+      role: roles.clinic,
     };
-    console.log(payload);
     jwt.sign(
       payload,
       keys.authSecret,
       {
         expiresIn: 3600,
         audience: 'All',
-        issuer: 'medtravel'
+        issuer: 'medtravel',
       },
       (err, token) => {
         if (err) {
@@ -202,10 +218,13 @@ router.post('/users', async (req, res) => {
 
     return res.status(response.statusCode).json(response);
   }
-  
+
   const loginRequest = req.body;
 
-  let getLoginResponse = await Repository.getAll(Login, { email: loginRequest.email, role: roles.member });
+  let getLoginResponse = await Repository.getAll(Login, {
+    email: loginRequest.email,
+    role: roles.member,
+  });
   //Check if Login Exists
   if (getLoginResponse.isSuccess && !getLoginResponse.result) {
     await getLoginResponse.NotFound();
@@ -221,23 +240,22 @@ router.post('/users', async (req, res) => {
     //Sign the Token
     const payload = {
       id: login._id,
-      userData:{
+      userData: {
         id: user._id,
         name: user.name,
         lastname: user.lastname,
-        avatar: user.avatar
+        avatar: user.avatar,
       },
       email: login.email,
-      role: roles.member
+      role: roles.member,
     };
-    console.log(payload);
     jwt.sign(
       payload,
       keys.authSecret,
       {
         expiresIn: 3600,
         audience: 'All',
-        issuer: 'medtravel'
+        issuer: 'medtravel',
       },
       (err, token) => {
         if (err) {

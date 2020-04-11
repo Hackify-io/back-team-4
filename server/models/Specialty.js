@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import mongoosePaginate from "mongoose-paginate-v2";
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 
-import VersionSchema from "./VersionSchema";
+import VersionSchema from './VersionSchema';
 //Create Schema
 const SpecialtySchema = new VersionSchema({
   name: {
@@ -16,5 +16,5 @@ const SpecialtySchema = new VersionSchema({
 
 SpecialtySchema.plugin(mongoosePaginate);
 
-const Specialty = mongoose.model("specialties", SpecialtySchema);
+const Specialty = mongoose.model('specialties', SpecialtySchema);
 export default Specialty;

@@ -1,7 +1,7 @@
 import Validator from 'validator';
 import { isEmpty, isRequired } from './is-empty';
 
-export const validateFooFields = data => {
+export const validateFooFields = (data) => {
   let errors = {};
   //If the values are null set to empty string
   data.key = isRequired(data.key);
@@ -17,6 +17,6 @@ export const validateFooFields = data => {
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

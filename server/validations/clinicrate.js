@@ -1,11 +1,11 @@
-import Validator from "validator";
-import { isEmpty, isRequired } from "./is-empty";
+import Validator from 'validator';
+import { isEmpty, isRequired } from './is-empty';
 
-export const validateClinicRateFields = data => {
+export const validateClinicRateFields = (data) => {
   let errors = {};
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

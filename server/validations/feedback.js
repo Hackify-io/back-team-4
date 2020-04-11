@@ -1,7 +1,7 @@
-import Validator from "validator";
-import { isEmpty, isRequired } from "./is-empty";
+import Validator from 'validator';
+import { isEmpty, isRequired } from './is-empty';
 
-export const validateFeedbackFields = data => {
+export const validateFeedbackFields = (data) => {
   let errors = {};
   //If the values are null set to empty string
   data.user = isRequired(data.user);
@@ -9,17 +9,17 @@ export const validateFeedbackFields = data => {
   data.message = isRequired(data.message);
 
   if (Validator.isEmpty(data.user)) {
-    errors.user = "user field is required";
+    errors.user = 'user field is required';
   }
   if (Validator.isEmpty(data.user)) {
-    errors.rate = "rate field is required";
+    errors.rate = 'rate field is required';
   }
   if (Validator.isEmpty(data.message)) {
-    errors.message = "message field is required";
+    errors.message = 'message field is required';
   }
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

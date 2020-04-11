@@ -1,6 +1,6 @@
 const keys = {
-    mongoURI: '',
-    authSecret: ''
+  mongoURI: '',
+  authSecret: '',
 };
-  
+
 export default keys;

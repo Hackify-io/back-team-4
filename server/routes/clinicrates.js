@@ -1,27 +1,27 @@
-import express from "express";
+import express from 'express';
 
 const router = express();
 
-import Repository from "./../services/repository";
+import Repository from './../services/repository';
 
 //import models
-import Clinic from "../models/Clinic";
-import { validateClinicFields } from "../validations/clinic";
+import Clinic from '../models/Clinic';
+import { validateClinicFields } from '../validations/clinic';
 
-import { validateClinicRateFields } from "../validations/clinicrate";
-import ClinicRate from "../models/ClinicRate";
+import { validateClinicRateFields } from '../validations/clinicrate';
+import ClinicRate from '../models/ClinicRate';
 
 // @route   POST api/clinics/:id/rates
 // @desc    Add rate to clinic
 // @access  Private
-router.post("/:clinicId/rates/", async (req, res) => {
+router.post('/:clinicId/rates/', async (req, res) => {
   const createRequest = await Repository.validateCreateRequest(req.body);
-  if(!createRequest.isSuccess){
+  if (!createRequest.isSuccess) {
     return res.status(createRequest.statusCode).json(createRequest);
   }
   //Get Prerequirments: Clinic by ClinicId
   const { clinicId } = req.params;
-  const populate = ["rates"];
+  const populate = ['rates'];
   const getClinicResponse = await Repository.getById(
     Clinic,
     clinicId,
@@ -58,7 +58,7 @@ router.post("/:clinicId/rates/", async (req, res) => {
 
   const updateClinic = {
     rates: currentRates,
-    modifiedUser: req.body.createdUser
+    modifiedUser: req.body.createdUser,
   };
 
   const updateClinicResponse = await Repository.update(
@@ -83,7 +83,7 @@ router.post("/:clinicId/rates/", async (req, res) => {
 // @route   DELETE api/clinics/:id/rates
 // @desc    DELETE rate from clinic
 // @access  Private
-router.delete("/:clinicId/rates/:rateId", async (req, res) => {
+router.delete('/:clinicId/rates/:rateId', async (req, res) => {
   //Get Prerequirments: Clinic by ClinicId
   const { clinicId, rateId } = req.params;
   const getClinicResponse = await Repository.getById(Clinic, clinicId);
@@ -115,11 +115,11 @@ router.delete("/:clinicId/rates/:rateId", async (req, res) => {
   }
 
   //If everything goes well to this point we update clinic reference
-  const currentRates = currentClinic.rates.filter(r => r != rateId);
+  const currentRates = currentClinic.rates.filter((r) => r != rateId);
 
   const updateClinic = {
     rates: currentRates,
-    modifiedUser: `Delete ClinicRate: ${rateId}`
+    modifiedUser: `Delete ClinicRate: ${rateId}`,
   };
 
   const updateClinicResponse = await Repository.update(
